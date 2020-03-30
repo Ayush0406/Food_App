@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AndroidEatIt</string>
+    <string name="Logo_name">Eat It</string>
+    <string name="s_logan">Be Foody</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+</resources>
