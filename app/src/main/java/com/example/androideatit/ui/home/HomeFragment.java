@@ -12,7 +12,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
+import com.asksira.loopingviewpager.LoopingPagerAdapter;
+import com.asksira.loopingviewpager.LoopingViewPager;
+import com.example.androideatit.Adapter.MyBestDealsAdapter;
 import com.example.androideatit.Adapter.MyPopularCategoriesAdapter;
 import com.example.androideatit.R;
 
@@ -32,6 +36,8 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.recycler_popular)
     RecyclerView recycler_popular;
 
+    @BindView(R.id.viewpager)
+    LoopingViewPager viewPager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
@@ -48,11 +54,28 @@ public class HomeFragment extends Fragment {
             recycler_popular.setAdapter(adapter);
         });
 
+        homeViewModel.getBestDealList().observe(this, bestDealModels -> {
+            MyBestDealsAdapter adapter = new MyBestDealsAdapter(getContext(), bestDealModels, true);
+            viewPager.setAdapter(adapter);
+        });
+
         return root;
     }
 
     private void init() {
         recycler_popular.setHasFixedSize(true);
         recycler_popular.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewPager.resumeAutoScroll();
+    }
+
+    @Override
+    public void onPause() {
+        viewPager.pauseAutoScroll();
+        super.onPause();
     }
 }
