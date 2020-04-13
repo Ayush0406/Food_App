@@ -117,7 +117,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     {
         if(event.isSuccess())
         {
-            Toast.makeText(this, "Clicked on " + event.getCategoryModel().getName(), Toast.LENGTH_SHORT).show();
+            navController.navigate(R.id.nav_food_list);
+            //Toast.makeText(this, "Clicked on " + event.getCategoryModel().getName(), Toast.LENGTH_SHORT).show();
         }
     }
 }

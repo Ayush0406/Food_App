@@ -19,6 +19,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.asksira.loopingviewpager.LoopingPagerAdapter;
 import com.asksira.loopingviewpager.LoopingViewPager;
 import com.example.androideatit.Adapter.MyBestDealsAdapter;
+import com.example.androideatit.Adapter.MyFoodListAdapter;
 import com.example.androideatit.Adapter.MyPopularCategoriesAdapter;
 import com.example.androideatit.R;
 
