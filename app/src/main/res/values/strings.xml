@@ -20,4 +20,5 @@
     <string name="popular_categories">Popular Categories</string>
     <string name="best_deals">Best Deals</string>
     <string name="menu_menu">Categories</string>
+    <string name="menu_food_list">Food List</string>
 </resources>

@@ -11,4 +11,5 @@
     <color name="overlayActionBar">#0e0d0e</color>
     
     <color name="overlay_color">#55333639</color>
+    <color name="border_color">#AA333639</color>
 </resources>
