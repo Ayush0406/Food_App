@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.androideatit.Common.Common;
+import com.example.androideatit.Database.CartItem;
 import com.example.androideatit.R;
 
 import org.w3c.dom.Text;
@@ -45,6 +47,12 @@ public class MyFoodListAdapter extends RecyclerView.Adapter<MyFoodListAdapter.My
         Glide.with(context).load(foodModelList.get(position).getImage()).into(holder.img_food_image);
         holder.txt_food_name.setText(new StringBuilder(foodModelList.get(position).getName()));
         holder.txt_food_price.setText(new StringBuilder("$" + foodModelList.get(position).getPrice().toString()));
+
+
+        holder.img_quick_cart.setOnClickListener(view -> {
+            CartItem cartItem = new CartItem();
+            cartItem.setUid(Common.currentUser.getUid());
+        });
     }
 
     @Override
