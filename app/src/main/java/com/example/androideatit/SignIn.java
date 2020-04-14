@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.androideatit.Common.Common;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,6 +57,7 @@ public class SignIn extends AppCompatActivity {
                         if(dataSnapshot.child(edtPhone.getText().toString()).exists()) {
                             User user = dataSnapshot.child(edtPhone.getText().toString()).getValue(User.class);
                             if (user.getPassword().equals(edtPassword.getText().toString())) {
+                                Common.currentUser = user;
                                 Toast.makeText(SignIn.this, "Signed in successfully!", Toast.LENGTH_SHORT).show();
                                 Intent home = new Intent(SignIn.this, Home.class);
                                 startActivity(home);
