@@ -37,7 +37,7 @@ public class CartItem {
     private Double foodSize;
 
     @ColumnInfo(name = "uid")
-    private Double uid;
+    private String uid;
 
     @NonNull
     public String getFoodId() {
@@ -112,11 +112,11 @@ public class CartItem {
         this.foodSize = foodSize;
     }
 
-    public Double getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(Double uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 }
