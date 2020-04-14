@@ -51,7 +51,7 @@ public class MyFoodListAdapter extends RecyclerView.Adapter<MyFoodListAdapter.My
 
         holder.img_quick_cart.setOnClickListener(view -> {
             CartItem cartItem = new CartItem();
-            cartItem.setUid(Common.currentUser.getUid());
+            cartItem.setUid(Common.getUid());
         });
     }
 

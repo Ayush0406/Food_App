@@ -6,6 +6,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.example.androideatit"
         minSdkVersion 16
         targetSdkVersion 28
@@ -68,5 +69,5 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:2.2.5"
 
     implementation 'com.github.andremion:counterfab:1.2.2-alpha1'
-
+    implementation 'com.android.support:multidex:1.0.3'
 }
