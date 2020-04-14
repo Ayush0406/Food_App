@@ -6,4 +6,5 @@ import Model.User;
 public class Common {
     public static CategoryModel categorySelected;
     public static User currentUser;
+
 }
