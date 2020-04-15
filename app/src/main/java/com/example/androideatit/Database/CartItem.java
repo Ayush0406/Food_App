@@ -6,7 +6,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Cart", primaryKeys = {"uid", "foodId", "foodAddOn", "foodSize"})
+@Entity(tableName = "Cart", primaryKeys = {"uid", "foodId", "foodAddon", "foodSize"})
 public class CartItem {
     @NonNull
     @ColumnInfo(name = "foodId")

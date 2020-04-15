@@ -65,6 +65,20 @@ public class MyFoodListAdapter extends RecyclerView.Adapter<MyFoodListAdapter.My
         holder.txt_food_name.setText(new StringBuilder(foodModelList.get(position).getName()));
         holder.txt_food_price.setText(new StringBuilder("$" + foodModelList.get(position).getPrice().toString()));
 
+        holder.setListener(new IRecyclerClickListener() {
+            @Override
+            public void onItemClickListener(View view, int pos) {
+                Common.selectedFood = foodModelList.get(pos);
+                EventBus.getDefault().postSticky(new FoodItemClick(true, foodModelList.get(pos)));
+            }
+        });
+
+
+        holder.img_cart.setOnClickListener(view -> {
+            CartItem cartItem = new CartItem();
+            cartItem.setUid(Common.getUid());
+
+        });
 
         holder.img_cart.setOnClickListener(view -> {
             CartItem cartItem = new CartItem();
@@ -153,20 +167,9 @@ public class MyFoodListAdapter extends RecyclerView.Adapter<MyFoodListAdapter.My
                                 Toast.makeText(context, "[GET CART]" + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
-        holder.setListener(new IRecyclerClickListener() {
-            @Override
-            public void onItemClickListener(View view, int pos) {
-                Common.selectedFood = foodModelList.get(pos);
-                EventBus.getDefault().postSticky(new FoodItemClick(true, foodModelList.get(pos)));
-            }
-        });
-
-
-        holder.img_cart.setOnClickListener(view -> {
-            CartItem cartItem = new CartItem();
-            cartItem.setUid(Common.getUid());
 
         });
+
     }
 
     @Override
