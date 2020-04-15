@@ -61,7 +61,7 @@ public class MyFoodListAdapter extends RecyclerView.Adapter<MyFoodListAdapter.My
         });
 
 
-        holder.img_quick_cart.setOnClickListener(view -> {
+        holder.img_cart.setOnClickListener(view -> {
             CartItem cartItem = new CartItem();
             cartItem.setUid(Common.getUid());
 
@@ -87,7 +87,7 @@ public class MyFoodListAdapter extends RecyclerView.Adapter<MyFoodListAdapter.My
         @BindView(R.id.img_fav)
         ImageView img_fav;
         @BindView(R.id.img_quick_cart)
-        ImageView img_quick_cart;
+        ImageView img_cart;
 
         IRecyclerClickListener listener;
 
