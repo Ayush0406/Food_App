@@ -22,17 +22,19 @@
             app:expandedTitleTextAppearance="@android:color/transparent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
+            <ImageView
+                android:id="@+id/img_food"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@null"
+                android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax">
+
+            </ImageView>
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-        <ImageView
-            android:id="@+id/img_food"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@null"
-            android:scaleType="centerCrop"
-            app:layout_collapseMode="parallax">
 
-        </ImageView>
 
 
     </com.google.android.material.appbar.AppBarLayout>
