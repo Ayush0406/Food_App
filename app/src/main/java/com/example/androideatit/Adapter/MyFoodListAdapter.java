@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.androideatit.Callback.IRecyclerClickListener;
 import com.example.androideatit.Common.Common;
 import com.example.androideatit.EventBus.FoodItemClick;
+import com.example.androideatit.Database.CartItem;
 import com.example.androideatit.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -50,12 +51,20 @@ public class MyFoodListAdapter extends RecyclerView.Adapter<MyFoodListAdapter.My
         holder.txt_food_name.setText(new StringBuilder(foodModelList.get(position).getName()));
         holder.txt_food_price.setText(new StringBuilder("$" + foodModelList.get(position).getPrice().toString()));
 
+
         holder.setListener(new IRecyclerClickListener() {
             @Override
             public void onItemClickListener(View view, int pos) {
                 Common.selectedFood = foodModelList.get(pos);
                 EventBus.getDefault().postSticky(new FoodItemClick(true, foodModelList.get(pos)));
             }
+        });
+
+
+        holder.img_quick_cart.setOnClickListener(view -> {
+            CartItem cartItem = new CartItem();
+            cartItem.setUid(Common.getUid());
+
         });
     }
 
@@ -98,3 +107,4 @@ public class MyFoodListAdapter extends RecyclerView.Adapter<MyFoodListAdapter.My
         }
     }
 }
+
