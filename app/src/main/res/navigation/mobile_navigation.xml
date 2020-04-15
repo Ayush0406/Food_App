@@ -40,4 +40,10 @@
         android:name="com.example.androideatit.ui.foodlist.FoodListFragment"
         android:label="@string/menu_food_list"
         tools:layout="@layout/fragment_food_list" />
+
+    <fragment
+        android:id="@+id/nav_food_detail"
+        android:name="com.example.androideatit.ui.fooddetail.FoodDetailFragment"
+        android:label="@string/menu_food_detail"
+        tools:layout="@layout/fragment_food_detail" />
 </navigation>
