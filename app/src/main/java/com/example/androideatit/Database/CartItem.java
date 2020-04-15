@@ -1,13 +1,13 @@
 package com.example.androideatit.Database;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Cart")
+@Entity(tableName = "Cart", primaryKeys = {"uid", "foodId", "foodAddOn", "foodSize"})
 public class CartItem {
-    @PrimaryKey
     @NonNull
     @ColumnInfo(name = "foodId")
     private String foodId;
@@ -22,7 +22,7 @@ public class CartItem {
     private Double foodPrice;
 
     @ColumnInfo(name = "foodQuantity")
-    private Double foodQuantity;
+    private int foodQuantity;
 
     @ColumnInfo(name = "userPhone")
     private String userPhone;
@@ -30,12 +30,15 @@ public class CartItem {
     @ColumnInfo(name = "foodExtraPrice")
     private Double foodExtraPrice;
 
-    @ColumnInfo(name = "foodAddOn")
-    private String foodAddOn;
+    @NonNull
+    @ColumnInfo(name = "foodAddon")
+    private String foodAddon;
 
+    @NonNull
     @ColumnInfo(name = "foodSize")
-    private Double foodSize;
+    private String foodSize;
 
+    @NonNull
     @ColumnInfo(name = "uid")
     private String uid;
 
@@ -72,11 +75,11 @@ public class CartItem {
         this.foodPrice = foodPrice;
     }
 
-    public Double getFoodQuantity() {
+    public int getFoodQuantity() {
         return foodQuantity;
     }
 
-    public void setFoodQuantity(Double foodQuantity) {
+    public void setFoodQuantity(int foodQuantity) {
         this.foodQuantity = foodQuantity;
     }
 
@@ -96,19 +99,19 @@ public class CartItem {
         this.foodExtraPrice = foodExtraPrice;
     }
 
-    public String getFoodAddOn() {
-        return foodAddOn;
+    public String getFoodAddon() {
+        return foodAddon;
     }
 
-    public void setFoodAddOn(String foodAddOn) {
-        this.foodAddOn = foodAddOn;
+    public void setFoodAddon(String foodAddon) {
+        this.foodAddon = foodAddon;
     }
 
-    public Double getFoodSize() {
+    public String getFoodSize() {
         return foodSize;
     }
 
-    public void setFoodSize(Double foodSize) {
+    public void setFoodSize(String foodSize) {
         this.foodSize = foodSize;
     }
 
@@ -118,5 +121,18 @@ public class CartItem {
 
     public void setUid(String uid) {
         this.uid = uid;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == this)
+            return true;
+        if (! (obj instanceof CartItem))
+            return false;
+        CartItem cartItem = (CartItem)obj;
+        return cartItem.getFoodId().equals(this.foodId)
+                && cartItem.getFoodAddon().equals(this.foodAddon) &&
+                cartItem.getFoodSize().equals(this.foodSize);
+
     }
 }

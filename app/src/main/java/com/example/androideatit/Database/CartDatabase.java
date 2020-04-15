@@ -10,9 +10,9 @@ import androidx.room.RoomDatabase;
 public abstract class CartDatabase extends RoomDatabase {
     public abstract CartDAO cartDAO();
     private static CartDatabase instance;
-    private static CartDatabase getInstance(Context context){
+    public static CartDatabase getInstance(Context context){
         if (instance == null)
-            instance  = Room.databaseBuilder(context, CartDatabase.class, "DB1").build();
+            instance  = Room.databaseBuilder(context, CartDatabase.class, "DB2").build();
         return instance;
     }
 }
