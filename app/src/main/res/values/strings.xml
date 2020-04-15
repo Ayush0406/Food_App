@@ -22,4 +22,7 @@
     <string name="menu_menu">Categories</string>
     <string name="menu_food_list">Food List</string>
     <string name="menu_food_detail">Food Detail</string>
+    <string name="size">Size</string>
+    <string name= "add_on">Addon</string>
+
 </resources>

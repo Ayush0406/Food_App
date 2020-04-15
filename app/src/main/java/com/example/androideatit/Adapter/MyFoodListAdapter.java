@@ -73,13 +73,6 @@ public class MyFoodListAdapter extends RecyclerView.Adapter<MyFoodListAdapter.My
             }
         });
 
-
-        holder.img_cart.setOnClickListener(view -> {
-            CartItem cartItem = new CartItem();
-            cartItem.setUid(Common.getUid());
-
-        });
-
         holder.img_cart.setOnClickListener(view -> {
             CartItem cartItem = new CartItem();
             cartItem.setUid(Common.getUid());

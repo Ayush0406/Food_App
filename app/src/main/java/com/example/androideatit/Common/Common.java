@@ -1,5 +1,8 @@
 package com.example.androideatit.Common;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 import Model.CategoryModel;
 import Model.FoodModel;
 import Model.User;
@@ -18,4 +21,14 @@ public class Common {
         return Uid;
     }
 
+    public static String formatPrice(double price) {
+        if (price != 0){
+            DecimalFormat df = new DecimalFormat("#,##0.00");
+            df.setRoundingMode(RoundingMode.UP);
+            String finalPrice  = new StringBuilder(df.format(price)).toString();
+            return finalPrice.replace(".", ",");
+        }
+        else
+            return "0,00";
+    }
 }
