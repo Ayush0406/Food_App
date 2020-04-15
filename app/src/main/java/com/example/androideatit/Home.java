@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.widget.Toast;
 
 import com.example.androideatit.EventBus.CategoryClick;
+import com.example.androideatit.EventBus.FoodItemClick;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -50,7 +51,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_menu, R.id.nav_food_list)
+                R.id.nav_home, R.id.nav_menu, R.id.nav_food_list, R.id.nav_food_detail)
                 .setDrawerLayout(drawer)
                 .build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -112,12 +113,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     // UI updates must run on MainThread
     //this must be after onStart method only. Else it gives error.
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-
     public void onCategorySelected(CategoryClick event)
     {
         if(event.isSuccess())
         {
             navController.navigate(R.id.nav_food_list);
+            //Toast.makeText(this, "Clicked on " + event.getCategoryModel().getName(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onFoodItemSelected(FoodItemClick event)
+    {
+        if(event.isSuccess())
+        {
+            navController.navigate(R.id.nav_food_detail);
             //Toast.makeText(this, "Clicked on " + event.getCategoryModel().getName(), Toast.LENGTH_SHORT).show();
         }
     }

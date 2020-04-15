@@ -9,6 +9,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androideatit.Adapter.MyFoodListAdapter;
+import com.example.androideatit.Common.Common;
 import com.example.androideatit.R;
 
 import java.util.List;
@@ -27,7 +29,7 @@ import butterknife.Unbinder;
 
 public class FoodListFragment extends Fragment {
 
-    private FoodListViewModel foodListViewModelViewModel;
+    private FoodListViewModel foodListViewModel;
 
     Unbinder unbinder;
     @BindView(R.id.recycler_food_list)
@@ -38,14 +40,14 @@ public class FoodListFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        foodListViewModelViewModel =
+        foodListViewModel =
                 ViewModelProviders.of(this).get(FoodListViewModel.class);
         View root = inflater.inflate(R.layout.fragment_food_list, container, false);
 
         unbinder = ButterKnife.bind(this, root);
         initViews();
 
-        foodListViewModelViewModel.getMutableLiveDataFoodList().observe(this, new Observer<List<FoodModel>>() {
+        foodListViewModel.getMutableLiveDataFoodList().observe(this, new Observer<List<FoodModel>>() {
             @Override
             public void onChanged(List<FoodModel> foodModels) {
                 adapter = new MyFoodListAdapter(getContext(), foodModels);
@@ -57,6 +59,8 @@ public class FoodListFragment extends Fragment {
     }
 
     private void initViews() {
+
+        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(Common.categorySelected.getName());
         recycler_food_list.setHasFixedSize(true);
         recycler_food_list.setLayoutManager(new LinearLayoutManager(getContext()));
 
