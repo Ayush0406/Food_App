@@ -75,6 +75,7 @@ import android.widget.RadioButton;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -133,6 +134,7 @@ public class CartFragment extends Fragment {
         });
         unbinder = ButterKnife.bind(this,root);
         initViews();
+        initLocation();
         return root;
     }
 
@@ -157,11 +159,23 @@ public class CartFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(fusedLocationProviderClient != null)
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.getMainLooper());
+    }
+
+    @Override
     public void onStop() {
         EventBus.getDefault().postSticky(new HideFABCart(false));
         cartViewModel.onStop();
         if(EventBus.getDefault().isRegistered(this))
             EventBus.getDefault().unregister(this);
+
+        if(fusedLocationProviderClient != null)
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+
+
         super.onStop();
     }
 
@@ -234,15 +248,15 @@ public class CartFragment extends Fragment {
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_place_order, null);
 
-        EditText edt_address = (EditText)view.findViewById(R.id.edt_address);
-        EditText edt_comment = (EditText)view.findViewById(R.id.edt_comment);
-        TextView txt_address = (TextView)view.findViewById(R.id.txt_address_detail);
+        EditText edt_address = view.findViewById(R.id.edt_address);
+        EditText edt_comment = view.findViewById(R.id.edt_comment);
+        TextView txt_address = view.findViewById(R.id.txt_address_detail);
         RadioButton rdi_home = (RadioButton)view.findViewById(R.id.rdi_home_address);
         RadioButton rdi_other_address = (RadioButton)view.findViewById(R.id.rdi_other_address);
         RadioButton rdi_ship_here = (RadioButton)view.findViewById(R.id.rdi_ship_this_address);
         RadioButton rdi_cod = (RadioButton)view.findViewById(R.id.rdi_cod);
 
-//        //Data
+        //Data
 //        edt_address.setText(Common.currentUser.getAddress());
 
         //Event
@@ -304,7 +318,7 @@ public class CartFragment extends Fragment {
         builder.setView(view);
         builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
             dialogInterface.dismiss();
-        }).setPositiveButton("Yes", (dialogInterface, i) -> {
+        }).setPositiveButton("Proceed", (dialogInterface, i) -> {
             Toast.makeText(getContext(),"Implement later", Toast.LENGTH_SHORT).show();
         });
 
@@ -340,7 +354,13 @@ public class CartFragment extends Fragment {
     }
 
     private void buildLocationCallback() {
-
+        locationCallback = new LocationCallback(){
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                currentLocation = locationResult.getLastLocation();
+            }
+        };
     }
 
     private void buildLocationRequest() {
@@ -350,33 +370,5 @@ public class CartFragment extends Fragment {
         locationRequest.setFastestInterval(3000);
         locationRequest.setSmallestDisplacement(10f);
     }
-    /* https://www.youtube.com/watch?v=nZ2gHpbAXHc&list=PLaoF-xhnnrRXx3V3mLCwYzAdcT_I9RxgL&index=21
-
-    9 mins onwards add code
-    if(fusedLocationProviderClient != null)
-            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-
-
-     */
 
 }
-
-/*
-
-<<<<<<< HEAD
-
-=======
-
-
-<<<<<<< HEAD
-
-
-
-
-
-
-
-}
-
-=======
- */
