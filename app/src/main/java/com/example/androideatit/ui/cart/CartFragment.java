@@ -4,6 +4,8 @@ package com.example.androideatit.ui.cart;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.os.Looper;
+
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,14 +45,46 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import butterknife.OnClick;
+
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.Single;
+import io.reactivex.observers.DisposableSingleObserver;
+
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+
+
+
+import android.widget.EditText;
+import android.widget.RadioButton;
+
+//import com.google.android.gms.common.internal.service.Common;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+
+import java.io.IOException;
+
+
+
+
 
 public class CartFragment extends Fragment {
 
@@ -185,55 +219,11 @@ public class CartFragment extends Fragment {
                     }
                 });
     }
-}
-
-/*
-
-<<<<<<< HEAD
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.os.Looper;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.RadioButton;
-=======
-
-
-<<<<<<< HEAD
-import androidx.fragment.app.Fragment;
-
-import com.example.androideatit.R;
-import com.google.android.gms.common.internal.service.Common;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
-
-import butterknife.OnClick;
-import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableSingleObserver;
-
-
-
-
 
     LocationRequest locationRequest;
     LocationCallback locationCallback;
     FusedLocationProviderClient fusedLocationProviderClient;
     Location currentLocation;
-
 
 
 
@@ -274,40 +264,40 @@ import io.reactivex.observers.DisposableSingleObserver;
         rdi_ship_here.setOnCheckedChangeListener((compoundButton, b) -> {
             if(b)
             {
-                 fusedLocationProviderClient.getLastLocation()
-                         .addOnFailureListener(e -> {
-                             Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                             txt_address.setVisibility(View.GONE);
-                         })
-                         .addOnCompleteListener(task -> {
-                             String coordinates = new StringBuilder()
-                                     .append(task.getResult().getLatitude())
-                                     .append("/")
-                                     .append(task.getResult().getLongitude()).toString();
+                fusedLocationProviderClient.getLastLocation()
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            txt_address.setVisibility(View.GONE);
+                        })
+                        .addOnCompleteListener(task -> {
+                            String coordinates = new StringBuilder()
+                                    .append(task.getResult().getLatitude())
+                                    .append("/")
+                                    .append(task.getResult().getLongitude()).toString();
 
-                             Single<String> singleAddress = Single.just(getAddressFromLatLng(task.getResult().getLatitude(),
-                                     task.getResult().getLongitude() ));
+                            Single<String> singleAddress = Single.just(getAddressFromLatLng(task.getResult().getLatitude(),
+                                    task.getResult().getLongitude() ));
 
-                             Disposable disposable = singleAddress.subscribeWith(new DisposableSingleObserver<String>() {
+                            Disposable disposable = singleAddress.subscribeWith(new DisposableSingleObserver<String>() {
 
-                                 @Override
-                                 public void onSuccess(String s) {
-                                     edt_address.setText(coordinates);
-                                     txt_address.setText(s);
-                                     txt_address.setVisibility(View.VISIBLE);
-                                 }
+                                @Override
+                                public void onSuccess(String s) {
+                                    edt_address.setText(coordinates);
+                                    txt_address.setText(s);
+                                    txt_address.setVisibility(View.VISIBLE);
+                                }
 
-                                 @Override
-                                 public void onError(Throwable e) {
-                                     edt_address.setText(coordinates);
-                                     txt_address.setText(e.getMessage());
-                                     txt_address.setVisibility(View.VISIBLE);
+                                @Override
+                                public void onError(Throwable e) {
+                                    edt_address.setText(coordinates);
+                                    txt_address.setText(e.getMessage());
+                                    txt_address.setVisibility(View.VISIBLE);
 
-                                 }
-                             });
+                                }
+                            });
 
 
-                         });
+                        });
             }
         });
 
@@ -367,7 +357,25 @@ import io.reactivex.observers.DisposableSingleObserver;
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
 
 
-     *
+     */
+
+}
+
+/*
+
+<<<<<<< HEAD
+
+=======
+
+
+<<<<<<< HEAD
+
+
+
+
+
+
+
 }
 
 =======
