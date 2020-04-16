@@ -14,6 +14,7 @@ import com.example.androideatit.Database.LocalCartDataSource;
 import com.example.androideatit.EventBus.CategoryClick;
 import com.example.androideatit.EventBus.CounterCartEvent;
 import com.example.androideatit.EventBus.FoodItemClick;
+import com.example.androideatit.EventBus.HideFABCart;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -70,15 +71,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                navController.navigate(R.id.nav_cart);
             }
         });
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
+        mAppBarConfiguration =  new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_menu, R.id.nav_food_list, R.id.nav_food_detail, R.id.nav_cart)
                 .setDrawerLayout(drawer)
                 .build();
@@ -191,6 +191,18 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     }
                 });
 
+    }
+
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onHideFABEvent(HideFABCart event)
+    {
+        if(event.isHidden())
+        {
+            fab.hide();
+        }
+        else
+            fab.show();
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
