@@ -28,7 +28,7 @@
         android:fontFamily="@font/brandon_medium"
         android:text="Your Address"
         android:visibility="gone"
-        android:textSize="22sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@android:color/black"/>
 
@@ -126,8 +126,4 @@
 
 </LinearLayout>
 
-<!--
- //For place order
-    <color name="dialog_header_color">#C5C5C5</color>
-    <color name="dialog_text_color">#464646</color>
--->
+

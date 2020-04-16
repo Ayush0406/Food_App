@@ -71,4 +71,8 @@ dependencies {
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
     implementation 'com.github.andremion:counterfab:1.2.2-alpha1'
     implementation 'com.android.support:multidex:1.0.3'
+
+    //For maps
+    implementation 'com.karumi:dexter:5.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 }
