@@ -25,7 +25,7 @@ public class LocalCartDataSource implements CartDataSource{
     }
 
     @Override
-    public Single<Long> sumPriceInCart(String uid) {
+    public Single<Double> sumPriceInCart(String uid) {
         return cartDAO.sumPriceInCart(uid);
     }
 
@@ -52,5 +52,10 @@ public class LocalCartDataSource implements CartDataSource{
     @Override
     public Single<Integer> cleanCart(String foodId, String uid) {
         return cartDAO.cleanCart(uid);
+    }
+
+    @Override
+    public Single<CartItem> getItemWithAllOptionsInCart(String uid, String foodId, String foodSize, String foodAddon) {
+        return cartDAO.getItemWithAllOptionsInCart(uid, foodId, foodSize, foodAddon);
     }
 }
