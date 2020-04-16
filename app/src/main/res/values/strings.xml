@@ -22,4 +22,5 @@
     <string name="menu_menu">Categories</string>
     <string name="menu_food_list">Food List</string>
     <string name="menu_food_detail">Food Detail</string>
+    <string name="menu_cart">Cart</string>
 </resources>

@@ -2,11 +2,17 @@ package com.example.androideatit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -115,6 +121,19 @@ public class SignIn extends AppCompatActivity {
                         }
                         else
                         {
+//                            String phoneNumber = "+919660059982";
+//                            String message = "You do not exist.";
+//                            final int SEND_SMS_PERMISSION_REQUEST_CODE = 1;
+//                            if(!checkPermission(Manifest.permission.SEND_SMS))
+//                            {
+//                                ActivityCompat.requestPermissions(SignIn.this, new String[]{Manifest.permission.SEND_SMS}, SEND_SMS_PERMISSION_REQUEST_CODE);
+//                            }
+//
+//                            if(checkPermission(Manifest.permission.SEND_SMS)) {
+//                                SmsManager smsManager = SmsManager.getDefault();
+//                                smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+//                                Toast.makeText(SignIn.this, "User does not exit.", Toast.LENGTH_SHORT).show();
+//                            }
                             Toast.makeText(SignIn.this, "User does not exit.", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -127,6 +146,12 @@ public class SignIn extends AppCompatActivity {
             }
         });
 
+    }
+
+    boolean checkPermission(String permission)
+    {
+        int check = ContextCompat.checkSelfPermission(this, permission);
+        return (check == PackageManager.PERMISSION_GRANTED);
     }
 
     private void signIn()
