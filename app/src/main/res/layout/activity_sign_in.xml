@@ -30,10 +30,9 @@
             android:textColorHint="@android:color/white"
             android:textColor="@android:color/white"
             android:textSize="34sp"
-            android:inputType="phone"
+            android:inputType="text"
             app:met_baseColor="@android:color/white"
             app:met_floatingLabel="highlight"
-            app:met_maxCharacters="11"
             app:met_primaryColor="@android:color/white"
             app:met_singleLineEllipsis="true"
             />
@@ -50,31 +49,49 @@
             android:inputType="textPassword"
             app:met_baseColor="@android:color/white"
             app:met_floatingLabel="highlight"
-            app:met_maxCharacters="11"
             app:met_primaryColor="@android:color/white"
             app:met_singleLineEllipsis="true"
             />
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnSignIn"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_margin="8dp"
+        android:orientation="vertical"
         android:layout_alignParentBottom="true"
-        android:layout_weight="1"
-        android:background="#CDDC39"
-        android:text="@string/sign_in"
-        android:textColor="@android:color/white">
-        <!--            app:buttonColor="@color/btnSignActive"-->
-        <!--            app:shadowColor="@android:color/black"-->
-        <!--            app:shadowEnabled="true"-->
-        <!--            app:shadowHeight="5dp"-->
-        <!--            app:cornerRadius="4dp"-->
+        >
 
-    </Button>
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_margin="8dp"
+            android:textAlignment="center"
+            android:layout_gravity="center_vertical|center_horizontal"
+            />
+
+        <Button
+            android:id="@+id/btnSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_margin="8dp"
+            android:layout_alignParentBottom="true"
+            android:background="#CDDC39"
+            android:text="@string/sign_in"
+            android:textColor="@android:color/white">
+            <!--            app:buttonColor="@color/btnSignActive"-->
+            <!--            app:shadowColor="@android:color/black"-->
+            <!--            app:shadowEnabled="true"-->
+            <!--            app:shadowHeight="5dp"-->
+            <!--            app:cornerRadius="4dp"-->
+
+        </Button>
+
+    </LinearLayout>
 
 </RelativeLayout>
