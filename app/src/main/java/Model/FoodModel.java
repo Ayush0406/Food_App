@@ -1,5 +1,7 @@
 package Model;
 
+import android.util.Size;
+
 import java.util.List;
 
 public class FoodModel {
@@ -7,6 +9,11 @@ public class FoodModel {
     private Long price;
     private List<AddonModel> addon;
     private List<SizeModel> size;
+
+    //for cart
+
+    private List<AddonModel> userSelectedAddon;
+    private SizeModel userSelectedSize;
 
     public FoodModel() {
     }
@@ -65,5 +72,21 @@ public class FoodModel {
 
     public void setSize(List<SizeModel> size) {
         this.size = size;
+    }
+
+    public List<AddonModel> getUserSelectedAddon() {
+        return userSelectedAddon;
+    }
+
+    public void setUserSelectedAddon(List<AddonModel> userSelectedAddon) {
+        this.userSelectedAddon = userSelectedAddon;
+    }
+
+    public SizeModel getUserSelectedSize() {
+        return userSelectedSize;
+    }
+
+    public void setUserSelectedSize(SizeModel userSelectedSize) {
+        this.userSelectedSize = userSelectedSize;
     }
 }
