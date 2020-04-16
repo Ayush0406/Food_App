@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,12 +31,20 @@ import com.andremion.counterfab.CounterFab;
 import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.androideatit.Common.Common;
+import com.example.androideatit.Database.CartDataSource;
+import com.example.androideatit.Database.CartDatabase;
+import com.example.androideatit.Database.CartItem;
+import com.example.androideatit.Database.LocalCartDataSource;
+import com.example.androideatit.EventBus.CounterCartEvent;
 import com.example.androideatit.EventBus.FoodItemClick;
 import com.example.androideatit.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
@@ -47,9 +56,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import dmax.dialog.SpotsDialog;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class FoodDetailFragment extends Fragment implements TextWatcher {
     FoodDetailViewModel foodDetailViewModel;
+
+    private CartDataSource cartDataSource;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     Unbinder unbinder;
     BottomSheetDialog addonBottomSheetDialog;
@@ -89,6 +106,99 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
             displayAddonList(); //show all addon options
             addonBottomSheetDialog.show();
         }
+    }
+
+    @OnClick(R.id.btnCart)
+    void onCartItemAdd(){
+        CartItem cartItem = new CartItem();
+        cartItem.setUid(Common.getUid());
+        cartItem.setFoodId(Common.selectedFood.getId());
+        cartItem.setFoodName(Common.selectedFood.getName());
+        cartItem.setFoodImage(Common.selectedFood.getImage());
+        cartItem.setFoodPrice(Double.valueOf(String.valueOf(Common.selectedFood.getPrice())));
+        cartItem.setFoodQuantity(Integer.valueOf(numberButton.getNumber()));
+        cartItem.setFoodExtraPrice(Common.calculateExtraPrice(Common.selectedFood.getUserSelectedSize(), Common.selectedFood.getUserSelectedAddon())); // default setting
+        if(Common.selectedFood.getUserSelectedSize() != null)
+            cartItem.setFoodSize(new Gson().toJson(Common.selectedFood.getUserSelectedSize()));
+        else
+            cartItem.setFoodSize("Default");
+
+        cartDataSource.getItemWithAllOptionsInCart(Common.getUid(),
+                cartItem.getFoodId(),
+                cartItem.getFoodSize(),
+                cartItem.getFoodAddon())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<CartItem>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(CartItem cartItemFromDB) {
+                        if(cartItemFromDB.equals(cartItem)){
+                            //only update needed
+                            cartItemFromDB.setFoodExtraPrice(cartItem.getFoodExtraPrice());
+                            cartItemFromDB.setFoodAddon(cartItem.getFoodAddon());
+                            cartItemFromDB.setFoodSize(cartItem.getFoodSize());
+                            cartItemFromDB.setFoodQuantity(cartItemFromDB.getFoodQuantity() + cartItem.getFoodQuantity());
+
+                            cartDataSource.updateCartItems(cartItemFromDB)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new SingleObserver<Integer>() {
+                                        @Override
+                                        public void onSubscribe(Disposable d) {
+
+                                        }
+
+                                        @Override
+                                        public void onSuccess(Integer integer) {
+                                            Toast.makeText(getContext(), "Cart Updated", Toast.LENGTH_SHORT).show();
+                                            EventBus.getDefault().postSticky(new CounterCartEvent(true));
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            Toast.makeText(getContext(), "[UPDATE CART]" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        }
+
+                        else{
+                            // item needs to be inserted
+                            compositeDisposable.add(cartDataSource.insertOrReplaceAll(cartItem)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(() -> {
+                                        Toast.makeText(getContext(), "Added to Cart", Toast.LENGTH_SHORT).show();
+                                        EventBus.getDefault().postSticky(new CounterCartEvent(true));
+                                    }, throwable -> {
+                                        Toast.makeText(getContext(), "CART ERROR" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }));
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (e.getMessage().contains("empty")){
+                            // Code for when cart is empty
+                            compositeDisposable.add(cartDataSource.insertOrReplaceAll(cartItem)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(() -> {
+                                        Toast.makeText(getContext(), "Added to Cart", Toast.LENGTH_SHORT).show();
+                                        EventBus.getDefault().postSticky(new CounterCartEvent(true));
+                                    }, throwable -> {
+                                        Toast.makeText(getContext(), "CART ERROR" + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }));
+                        }
+                        else
+                            Toast.makeText(getContext(), "[GET CART]" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 
     private void displayAddonList() {
@@ -137,6 +247,9 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
     }
 
     private void initViews() {
+
+        cartDataSource = new LocalCartDataSource(CartDatabase.getInstance(getContext()).cartDAO());
+
         addonBottomSheetDialog = new BottomSheetDialog(getContext(), R.style.DialogStyle);
         View layout_addon_display = getLayoutInflater().inflate(R.layout.layout_addon_display, null);
         chip_group_addon = (ChipGroup)layout_addon_display.findViewById(R.id.chip_group_addon);
@@ -272,5 +385,10 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
     @Override
     public void afterTextChanged(Editable editable) {
         //nothing
+    }
+
+    public void onStop(){
+        compositeDisposable.clear();
+        super.onStop();
     }
 }
