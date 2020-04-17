@@ -261,13 +261,13 @@ public class CartFragment extends Fragment {
         RadioButton rdi_cod = (RadioButton)view.findViewById(R.id.rdi_cod);
 
         //Data
-//        edt_address.setText(Common.currentUser.getAddress());
+        edt_address.setText(Common.currentUser.getAddress());
 
         //Event
         rdi_home.setOnCheckedChangeListener((compoundButton, b) -> {
             if(b)
             {
-                //edt_address.setText(Common.currentUser.getAddress());
+                edt_address.setText(Common.currentUser.getAddress());
                 txt_address.setVisibility(View.GONE);
             }
         });
