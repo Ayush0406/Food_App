@@ -52,4 +52,10 @@
         android:name="com.example.androideatit.ui.cart.CartFragment"
         android:label="@string/menu_cart"
         tools:layout="@layout/fragment_cart" />
+
+    <fragment
+        android:id="@+id/nav_view_orders"
+        android:name="com.example.androideatit.ui.view_orders.ViewOrdersFragment"
+        android:label="@string/menu_view_orders"
+        tools:layout="@layout/fragment_view_order" />
 </navigation>
