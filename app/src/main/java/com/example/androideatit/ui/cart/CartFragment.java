@@ -46,6 +46,7 @@ import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.Locale;
 
+import Model.Order;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -55,6 +56,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.Single;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -331,6 +333,41 @@ public class CartFragment extends Fragment {
     }
 
     private void paymentCOD(String address, String comment) {
+        compositeDisposable.add(cartDataSource.getAllCart(Common.getUid())
+            .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<CartItem>>() {
+                    @Override
+                    public void accept(List<CartItem> cartItems) throws Exception {
+                        //when we have all cart items we will get price
+                        cartDataSource.sumPriceInCart(Common.getUid())
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new SingleObserver<Double>() {
+                                    @Override
+                                    public void onSubscribe(Disposable d) {
+
+                                    }
+
+                                    @Override
+                                    public void onSuccess(Double totalPrice) {
+                                        double finalPrice = totalPrice; //discount will be used later
+                                        Order order = new Order();
+                                        order.setUserId(Common.getUid());
+                                        order.setUserName(Common.currentUser.getName());
+                                        order.setUserPhone(Common.getUid());
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Toast.makeText(getContext(),"" + e.getMessage(), Toast.LENGTH_SHORT).show();;
+                                    }
+                                });
+
+                    }
+                }, throwable -> {
+                        Toast.makeText(getContext(),"" + throwable.getMessage(), Toast.LENGTH_SHORT).show();;
+                }));
     }
 
     private String getAddressFromLatLng(double latitude, double longitude) {
