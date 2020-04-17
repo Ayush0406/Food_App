@@ -62,10 +62,20 @@
         android:layout_alignParentBottom="true"
         >
 
-        <com.google.android.gms.common.SignInButton
-            android:id="@+id/sign_in_button"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            >
+
+
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
             android:layout_margin="8dp"
@@ -75,8 +85,9 @@
 
         <Button
             android:id="@+id/btnSignIn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
             android:layout_margin="8dp"
@@ -91,6 +102,14 @@
             <!--            app:cornerRadius="4dp"-->
 
         </Button>
+        </LinearLayout>
+
+        <Button
+            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#9F0A0A"
+            android:text="Not a Customer?" />
 
     </LinearLayout>
 

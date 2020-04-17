@@ -21,9 +21,9 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CartViewModel extends ViewModel {
 
-    private MutableLiveData<List<CartItem>> mutableLiveDataCartItems;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private CartDataSource cartDataSource;
+    private MutableLiveData<List<CartItem>> mutableLiveDataCartItems;
     public CartViewModel() {
 
         compositeDisposable = new CompositeDisposable();
