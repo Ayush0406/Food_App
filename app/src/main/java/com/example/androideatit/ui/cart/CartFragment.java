@@ -1,6 +1,5 @@
 package com.example.androideatit.ui.cart;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -54,6 +53,7 @@ import butterknife.OnClick;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.Single;
@@ -88,6 +88,13 @@ import java.io.IOException;
 
 
 public class CartFragment extends Fragment {
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+    LocationRequest locationRequest;
+    LocationCallback locationCallback;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    Location currentLocation;
 
     private Parcelable recyclerViewState;
     private CartDataSource cartDataSource;
@@ -174,7 +181,7 @@ public class CartFragment extends Fragment {
 
         if(fusedLocationProviderClient != null)
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-
+        compositeDisposable.clear();
 
         super.onStop();
     }
@@ -233,11 +240,6 @@ public class CartFragment extends Fragment {
                     }
                 });
     }
-
-    LocationRequest locationRequest;
-    LocationCallback locationCallback;
-    FusedLocationProviderClient fusedLocationProviderClient;
-    Location currentLocation;
 
 
 
@@ -319,11 +321,16 @@ public class CartFragment extends Fragment {
         builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
             dialogInterface.dismiss();
         }).setPositiveButton("Proceed", (dialogInterface, i) -> {
-            Toast.makeText(getContext(),"Implement later", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(),"Implement later", Toast.LENGTH_SHORT).show();
+            if(rdi_cod.isChecked())
+                paymentCOD(edt_address.getText().toString(), edt_comment.getText().toString());
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void paymentCOD(String address, String comment) {
     }
 
     private String getAddressFromLatLng(double latitude, double longitude) {
