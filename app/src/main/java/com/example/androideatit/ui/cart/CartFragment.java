@@ -84,9 +84,6 @@ import com.google.android.gms.tasks.Task;
 import java.io.IOException;
 
 
-
-
-
 public class CartFragment extends Fragment {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -161,8 +158,10 @@ public class CartFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(!EventBus.getDefault().isRegistered(this))
+        if(!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
+        }
+        calculateTotalPrice();
     }
 
     @Override
