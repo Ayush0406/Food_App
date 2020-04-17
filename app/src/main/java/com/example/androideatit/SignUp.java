@@ -104,7 +104,7 @@ public class SignUp extends AppCompatActivity {
                             finish();
                         }
                         else {
-                            User user = new User(edtName.getText().toString(), edtPassword.getText().toString(), "Test Address", "testmail.com", "0", "9660059982", "9660059982");
+                            User user = new User(edtName.getText().toString(), edtPassword.getText().toString(), " ", "testmail.com", "0", edtPhone.getText().toString(), edtPhone.getText().toString());
                             table_user.child(edtPhone.getText().toString().replace(".", ",")).setValue(user);
                             Toast.makeText(SignUp.this, "Sign Up successful. Please Sign In.", Toast.LENGTH_SHORT).show();
                             finish();
