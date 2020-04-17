@@ -47,6 +47,7 @@ import com.google.gson.Gson;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Model.AddonModel;
 import Model.FoodModel;
@@ -70,7 +71,6 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
 
     Unbinder unbinder;
     BottomSheetDialog addonBottomSheetDialog;
-
     ChipGroup chip_group_addon;
     EditText edt_search;
 
@@ -249,7 +249,6 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
     private void initViews() {
 
         cartDataSource = new LocalCartDataSource(CartDatabase.getInstance(getContext()).cartDAO());
-
         addonBottomSheetDialog = new BottomSheetDialog(getContext(), R.style.DialogStyle);
         View layout_addon_display = getLayoutInflater().inflate(R.layout.layout_addon_display, null);
         chip_group_addon = (ChipGroup)layout_addon_display.findViewById(R.id.chip_group_addon);
