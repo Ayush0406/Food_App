@@ -29,10 +29,10 @@ public class Common {
             DecimalFormat df = new DecimalFormat("#,##0.00");
             df.setRoundingMode(RoundingMode.UP);
             String finalPrice  = new StringBuilder(df.format(price)).toString();
-            return finalPrice.replace(".", ",");
+            return finalPrice;//.replace(".", ",");
         }
         else
-            return "0,00";
+            return "0.00";
     }
 
     public static Double calculateExtraPrice(SizeModel userSelectedSize, List<AddonModel> userSelectedAddon) {
