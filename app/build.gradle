@@ -75,4 +75,9 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    //For maps
+    implementation 'com.karumi:dexter:5.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+
 }

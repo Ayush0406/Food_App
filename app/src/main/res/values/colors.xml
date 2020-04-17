@@ -12,4 +12,8 @@
     
     <color name="overlay_color">#55333639</color>
     <color name="border_color">#AA333639</color>
+
+    //For place order
+    <color name="dialog_header_color">#C5C5C5</color>
+    <color name="dialog_text_color">#464646</color>
 </resources>
