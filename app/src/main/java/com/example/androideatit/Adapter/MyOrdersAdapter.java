@@ -47,8 +47,8 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-//        Glide.with(context).Load(orderList.get(position).getCartItemList().get(0).getFoodImage())
-//                .into(holder.img_order); //load default image in cart
+        Glide.with(context).load(orderList.get(position).getCartItemList().get(0).getFoodImage())
+                .into(holder.img_order); //load default image in cart
         calendar.setTimeInMillis(orderList.get(position).getCreateDate());
         Date date = new Date(orderList.get(position).getCreateDate());
         holder.txt_order_date.setText(new StringBuilder(Common.getDateofWeek(calendar.get(Calendar.DAY_OF_WEEK)))
@@ -56,7 +56,7 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
         .append(simpleDateFormat.format(date)));
         holder.txt_order_number.setText(new StringBuilder("Order Number: ")
         .append(orderList.get(position).getOrderNumber()));
-        holder.txt_order_comment.setText(new StringBuilder("Comment").append(orderList.get(position).getComment()));
+        holder.txt_order_comment.setText(new StringBuilder("Comment: ").append(orderList.get(position).getComment()));
         holder.txt_order_status.setText(new StringBuilder("Status: ").append(Common.convertStatusToText(orderList.get(position).getOrderStatus())));
     }
 

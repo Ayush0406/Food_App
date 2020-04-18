@@ -447,14 +447,14 @@ public class CartFragment extends Fragment {
     }
 
     private void paymentCOD(String address, String comment) {
-        compositeDisposable.add(cartDataSource.getAllCart(Common.currentUser.getUid())
+        compositeDisposable.add(cartDataSource.getAllCart(Common.getUid())
             .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<CartItem>>() {
                     @Override
                     public void accept(List<CartItem> cartItems) throws Exception {
                         //when we have all cart items we will get price
-                        cartDataSource.sumPriceInCart(Common.currentUser.getUid())
+                        cartDataSource.sumPriceInCart(Common.getUid())
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new SingleObserver<Double>() {
@@ -467,7 +467,7 @@ public class CartFragment extends Fragment {
                                     public void onSuccess(Double totalPrice) {
                                         double finalPrice = totalPrice; //discount will be used later
                                         Order order = new Order();
-                                        order.setUserId(Common.currentUser.getUid());
+                                        order.setUserId(Common.getUid());
                                         order.setUserName(Common.currentUser.getName());
                                         order.setUserPhone(Common.currentUser.getPhone());
                                         order.setShippingAddress(address);
@@ -495,13 +495,13 @@ public class CartFragment extends Fragment {
 
                                     @Override
                                     public void onError(Throwable e) {
-                                        Toast.makeText(getContext(),"" + e.getMessage(), Toast.LENGTH_SHORT).show();;
+                                        Toast.makeText(getContext(),"1" + e.getMessage(), Toast.LENGTH_SHORT).show();;
                                     }
                                 });
 
                     }
                 }, throwable -> {
-                        Toast.makeText(getContext(),"" + throwable.getMessage(), Toast.LENGTH_SHORT).show();;
+                        Toast.makeText(getContext(),"2" + throwable.getMessage(), Toast.LENGTH_SHORT).show();;
                 }));
     }
 
@@ -511,11 +511,10 @@ public class CartFragment extends Fragment {
                 .child(Common.createOrderNumber())
                 .setValue(order)
                 .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(),""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"3"+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }).addOnCompleteListener(task -> {
                     //write success
-                    // FIX ERROR
-                    /*cartDataSource.cleanCart(Common.currentUser.getUid())
+                    cartDataSource.cleanCart(Common.currentUser.getUid())
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new SingleObserver<Integer>() {
@@ -532,9 +531,9 @@ public class CartFragment extends Fragment {
 
                                 @Override
                                 public void onError(Throwable e) {
-                                    Toast.makeText(getContext(),""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(),"4"+e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
-                            });*/
+                            });
                 });
     }
 
@@ -584,3 +583,10 @@ public class CartFragment extends Fragment {
     }
 
 }
+
+/* https://www.youtube.com/watch?v=IS3jV84u2y4&list=PLaoF-xhnnrRXx3V3mLCwYzAdcT_I9RxgL&index=29
+18:09
+onLoadTimeSuccess
+on Load time failed
+PROBABLE ERROR
+ */
