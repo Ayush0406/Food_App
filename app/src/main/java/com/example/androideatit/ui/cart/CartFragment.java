@@ -1,12 +1,16 @@
 package com.example.androideatit.ui.cart;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.Looper;
 
 import android.text.Layout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -25,15 +29,18 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.ColumnInfo;
 import androidx.room.Update;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.androideatit.Adapter.MyCartAdapter;
 import com.example.androideatit.Common.Common;
+import com.example.androideatit.Common.MySwipeHelper;
 import com.example.androideatit.Database.CartDataSource;
 import com.example.androideatit.Database.CartDatabase;
 import com.example.androideatit.Database.CartItem;
 import com.example.androideatit.Database.LocalCartDataSource;
+import com.example.androideatit.EventBus.CounterCartEvent;
 import com.example.androideatit.EventBus.HideFABCart;
 import com.example.androideatit.EventBus.UpdateItemInCart;
 import com.example.androideatit.R;
@@ -106,7 +113,7 @@ public class CartFragment extends Fragment {
 
 
     private Unbinder unbinder;
-
+    private MyCartAdapter adapter;
     private CartViewModel cartViewModel;
 
     @Nullable
@@ -130,7 +137,7 @@ public class CartFragment extends Fragment {
                     group_place_holder.setVisibility(View.VISIBLE);
                     txt_empty_cart.setVisibility(View.GONE);
 
-                    MyCartAdapter adapter = new MyCartAdapter(getContext(),cartItems);
+                    adapter = new MyCartAdapter(getContext(),cartItems);
                     recycler_cart.setAdapter(adapter);
 
                 }
@@ -143,7 +150,7 @@ public class CartFragment extends Fragment {
     }
 
     private void initViews() {
-
+        setHasOptionsMenu(true);
         cartDataSource = new LocalCartDataSource(CartDatabase.getInstance(getContext()).cartDAO());
 
         EventBus.getDefault().postSticky(new HideFABCart(true));
@@ -153,6 +160,66 @@ public class CartFragment extends Fragment {
         recycler_cart.setLayoutManager(layoutManager);
         recycler_cart.addItemDecoration(new DividerItemDecoration(getContext(), layoutManager.getOrientation()));
 
+
+        MySwipeHelper mySwipeHelper = new MySwipeHelper(getContext(), recycler_cart, 200) {
+            @Override
+            public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<MyButton> buf) {
+                buf.add(new MyButton(getContext(),"Delete", 30, 0, Color.parseColor("FF3C30"),
+                            pos -> {
+                                CartItem cartItem = adapter.getItemAtPositon(pos);
+                                cartDataSource.deleteCartItem(cartItem)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new SingleObserver<Integer>() {
+                                            @Override
+                                            public void onSubscribe(Disposable d) {
+
+                                            }
+
+                                            @Override
+                                            public void onSuccess(Integer integer) {
+                                                adapter.notifyItemRemoved(pos);
+                                                sumAllItemInCart(); //update total price
+                                                EventBus.getDefault().postSticky(new CounterCartEvent(true)); //update FAB
+                                                Toast.makeText(getContext(), "Item deleted from cart successfully", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                Toast.makeText(getContext(), "Deleting item", Toast.LENGTH_SHORT).show();
+
+                            }));
+
+            }
+        };
+        sumAllItemInCart();
+    }
+
+    private void sumAllItemInCart() {
+        cartDataSource.sumPriceInCart(Common.getUid())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Double>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        
+                    }
+
+                    @Override
+                    public void onSuccess(Double aDouble) {
+                        txt_total_price.setText(new StringBuilder("Total: ").append(Common.formatPrice(aDouble)));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if(!e.getMessage().contains("Query returned empty"))
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 
     @Override
@@ -161,7 +228,6 @@ public class CartFragment extends Fragment {
         if(!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        calculateTotalPrice();
     }
 
     @Override
@@ -240,7 +306,47 @@ public class CartFragment extends Fragment {
                 });
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_settings).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+    }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.cart_menu,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_clear_cart)
+        {
+            cartDataSource.cleanCart(Common.getUid())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleObserver<Integer>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(Integer integer) {
+                            Toast.makeText(getContext(), "Cart cleared successfully", Toast.LENGTH_SHORT).show();
+                            EventBus.getDefault().postSticky(new CounterCartEvent(true));
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @OnClick(R.id.btn_place_order)
     void onPlaceOrderCLick(){

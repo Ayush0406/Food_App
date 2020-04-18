@@ -187,7 +187,12 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(Home.this, "[COUNT CART]"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        if (!e.getMessage().contains("Query returned empty")) {
+                            Toast.makeText(Home.this, "[COUNT CART]" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        else
+                            fab.setCount(0);
                     }
                 });
 

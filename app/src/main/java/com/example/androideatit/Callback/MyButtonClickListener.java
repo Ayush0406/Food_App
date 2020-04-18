@@ -1,4 +1,5 @@
 package com.example.androideatit.Callback;
 
-public class MyButtonClickListener {
+public interface MyButtonClickListener {
+    void onClick(int pos);
 }
