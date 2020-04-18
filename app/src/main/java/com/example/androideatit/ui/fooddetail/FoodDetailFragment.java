@@ -404,4 +404,7 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
         compositeDisposable.clear();
         super.onStop();
     }
+
+
 }
+
