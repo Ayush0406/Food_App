@@ -114,7 +114,6 @@ public class CartFragment extends Fragment {
     @BindView(R.id.group_place_holder)
     CardView group_place_holder;
 
-
     private Unbinder unbinder;
     private MyCartAdapter adapter;
     private CartViewModel cartViewModel;
@@ -514,6 +513,7 @@ public class CartFragment extends Fragment {
                     Toast.makeText(getContext(),"3"+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }).addOnCompleteListener(task -> {
                     //write success
+
                     cartDataSource.cleanCart(Common.currentUser.getUid())
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
