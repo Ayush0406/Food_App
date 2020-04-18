@@ -89,11 +89,12 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
     TextView food_price;
     @BindView(R.id.number_button)
     ElegantNumberButton numberButton;
-    @BindView(R.id.ratingBar)
-    RatingBar ratingBar;
+//    @BindView(R.id.ratingBar)
+//    RatingBar ratingBar;
     @BindView(R.id.btnShowComment)
     Button btnShowComment;
-
+    @BindView(R.id.food_price_total)
+    TextView food_price_total;
     @BindView(R.id.rdi_group_size)
     RadioGroup rdi_group_size;
     @BindView(R.id.img_add_addon)
@@ -114,6 +115,7 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
 //            Common.selectedFood.setAddon(List<AddonModel> addon);
 //        }
     }
+
 
     @OnClick(R.id.btnCart)
     void onCartItemAdd(){
@@ -293,6 +295,7 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
                     //remove when deleted
                     chip_group_user_selected_addon.removeView(view);
                     Common.selectedFood.getUserSelectedAddon().remove(addonModel);
+                    calculateTotalPrice();
                 });
 
                 chip_group_user_selected_addon.addView(chip);
@@ -307,8 +310,16 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
         food_name.setText(new StringBuilder(foodModel.getName()));
         food_description.setText(new StringBuilder(foodModel.getDescription()));
         food_price.setText(new StringBuilder(foodModel.getPrice().toString()));
+        food_price_total.setText(new StringBuilder(foodModel.getPrice().toString()));
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(Common.selectedFood.getName());
+
+        numberButton.setOnClickListener(new ElegantNumberButton.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calculateTotalPrice(); // update price
+            }
+        });
 
         //size
 
@@ -357,11 +368,13 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
             if(Common.selectedFood.getUserSelectedSize() != null)
                 totalPrice += Double.parseDouble(Common.selectedFood.getUserSelectedSize().getPrice().toString());
 
-
-            displayPrice = totalPrice * (Integer.parseInt(numberButton.getNumber()));
+            int num = Integer.parseInt(numberButton.getNumber());
+            displayPrice = totalPrice * (num);
             displayPrice = Math.round(displayPrice * 100.0/100.0);
 
-            food_price.setText(new StringBuilder("").append(Common.formatPrice(displayPrice)).toString());
+            food_price.setText(new StringBuilder("").append(Common.formatPrice(displayPrice/num)).toString());
+            food_price_total.setText(new StringBuilder("").append(Common.formatPrice(displayPrice)).toString());
+
     }
 
     @Override

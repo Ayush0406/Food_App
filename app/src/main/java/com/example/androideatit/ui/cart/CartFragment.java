@@ -114,7 +114,6 @@ public class CartFragment extends Fragment {
     @BindView(R.id.group_place_holder)
     CardView group_place_holder;
 
-
     private Unbinder unbinder;
     private MyCartAdapter adapter;
     private CartViewModel cartViewModel;
@@ -447,14 +446,14 @@ public class CartFragment extends Fragment {
     }
 
     private void paymentCOD(String address, String comment) {
-        compositeDisposable.add(cartDataSource.getAllCart(Common.currentUser.getUid())
+        compositeDisposable.add(cartDataSource.getAllCart(Common.getUid())
             .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<CartItem>>() {
                     @Override
                     public void accept(List<CartItem> cartItems) throws Exception {
                         //when we have all cart items we will get price
-                        cartDataSource.sumPriceInCart(Common.currentUser.getUid())
+                        cartDataSource.sumPriceInCart(Common.getUid())
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new SingleObserver<Double>() {
@@ -467,7 +466,7 @@ public class CartFragment extends Fragment {
                                     public void onSuccess(Double totalPrice) {
                                         double finalPrice = totalPrice; //discount will be used later
                                         Order order = new Order();
-                                        order.setUserId(Common.currentUser.getUid());
+                                        order.setUserId(Common.getUid());
                                         order.setUserName(Common.currentUser.getName());
                                         order.setUserPhone(Common.currentUser.getPhone());
                                         order.setShippingAddress(address);
@@ -515,7 +514,7 @@ public class CartFragment extends Fragment {
                 }).addOnCompleteListener(task -> {
                     //write success
                     // FIX ERROR
-                    /*cartDataSource.cleanCart(Common.currentUser.getUid())
+                    cartDataSource.cleanCart(Common.getUid())
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new SingleObserver<Integer>() {
@@ -534,7 +533,7 @@ public class CartFragment extends Fragment {
                                 public void onError(Throwable e) {
                                     Toast.makeText(getContext(),""+e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
-                            });*/
+                            });
                 });
     }
 
