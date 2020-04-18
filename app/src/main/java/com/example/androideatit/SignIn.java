@@ -40,6 +40,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import Model.User;
 import dmax.dialog.SpotsDialog;
 
@@ -111,6 +114,9 @@ public class SignIn extends AppCompatActivity {
                             if (user.getPassword().equals(edtPassword.getText().toString())) {
                                 Common.currentUser = user;
                                 Common.setUid(edtPhone.getText().toString().replace(".", ","));
+//                                Toast.makeText(SignIn.this, user.getAddress() + user.getEmail() + user.getCount(), Toast.LENGTH_SHORT).show();
+//                                database.getReference("Address").child(Common.getUid()).setValue("udaipur akashvani colony");
+//                                database.getReference("Address").child(Common.getUid()).child("abc").setValue(123);
                                 Toast.makeText(SignIn.this, "Signed in successfully!", Toast.LENGTH_SHORT).show();
                                 Intent home = new Intent(SignIn.this, Home.class);
                                 startActivity(home);
