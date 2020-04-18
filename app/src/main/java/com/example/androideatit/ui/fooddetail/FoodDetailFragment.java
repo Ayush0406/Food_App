@@ -42,6 +42,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -102,10 +103,16 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
 
     @OnClick(R.id.img_add_addon)
     void onAddonClick(){
+//        FirebaseDatabase.getInstance().getReference("category").child(Common.currentUser.get)
         if(Common.selectedFood.getAddon() != null){
             displayAddonList(); //show all addon options
             addonBottomSheetDialog.show();
         }
+
+//        else{
+//            List
+//            Common.selectedFood.setAddon(List<AddonModel> addon);
+//        }
     }
 
     @OnClick(R.id.btnCart)
@@ -122,6 +129,11 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
             cartItem.setFoodSize(new Gson().toJson(Common.selectedFood.getUserSelectedSize()));
         else
             cartItem.setFoodSize("Default");
+
+        if(Common.selectedFood.getUserSelectedAddon() != null)
+            cartItem.setFoodAddon(new Gson().toJson(Common.selectedFood.getUserSelectedAddon()));
+        else
+            cartItem.setFoodAddon("Default");
 
         cartDataSource.getItemWithAllOptionsInCart(Common.getUid(),
                 cartItem.getFoodId(),
@@ -391,4 +403,7 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
         compositeDisposable.clear();
         super.onStop();
     }
+
+
 }
+
