@@ -3,6 +3,7 @@ package com.example.androideatit.Common;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Random;
 
 import Model.AddonModel;
 import Model.CategoryModel;
@@ -11,6 +12,7 @@ import Model.SizeModel;
 import Model.User;
 
 public class Common {
+    public static final String ORDER_REF = "Orders";
     public static CategoryModel categorySelected;
     public static User currentUser;
     public static FoodModel selectedFood;
@@ -59,5 +61,12 @@ public class Common {
         }
 
 
+    }
+
+    public static String createOrderNumber() {
+        return new StringBuilder()
+                .append(System.currentTimeMillis()) //current time in milliseconds
+                .append(Math.abs(new Random().nextInt())) //random number to block same order at same time
+                .toString();
     }
 }

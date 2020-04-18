@@ -46,6 +46,7 @@ import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.Locale;
 
+import Model.Order;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -55,6 +56,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.Single;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -80,6 +82,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 
@@ -259,14 +262,23 @@ public class CartFragment extends Fragment {
         RadioButton rdi_cod = (RadioButton)view.findViewById(R.id.rdi_cod);
 
         //Data
-//        edt_address.setText(Common.currentUser.getAddress());
+        edt_address.setText(Common.currentUser.getAddress());
 
         //Event
         rdi_home.setOnCheckedChangeListener((compoundButton, b) -> {
             if(b)
             {
-                //edt_address.setText(Common.currentUser.getAddress());
-                txt_address.setVisibility(View.GONE);
+                if(Common.currentUser.getAddress().equals(" "))
+                {
+                    edt_address.setText("");
+                    edt_address.setHint("Enter your address");
+                    txt_address.setVisibility(View.GONE);
+                }
+                else
+                {
+                    edt_address.setText(Common.currentUser.getAddress());
+                    txt_address.setVisibility(View.GONE);
+                }
             }
         });
         rdi_other_address.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -321,7 +333,6 @@ public class CartFragment extends Fragment {
         builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
             dialogInterface.dismiss();
         }).setPositiveButton("Proceed", (dialogInterface, i) -> {
-            //Toast.makeText(getContext(),"Implement later", Toast.LENGTH_SHORT).show();
             if(rdi_cod.isChecked())
                 paymentCOD(edt_address.getText().toString(), edt_comment.getText().toString());
         });
@@ -331,6 +342,95 @@ public class CartFragment extends Fragment {
     }
 
     private void paymentCOD(String address, String comment) {
+        compositeDisposable.add(cartDataSource.getAllCart(Common.currentUser.getUid())
+            .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<CartItem>>() {
+                    @Override
+                    public void accept(List<CartItem> cartItems) throws Exception {
+                        //when we have all cart items we will get price
+                        cartDataSource.sumPriceInCart(Common.currentUser.getUid())
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new SingleObserver<Double>() {
+                                    @Override
+                                    public void onSubscribe(Disposable d) {
+
+                                    }
+
+                                    @Override
+                                    public void onSuccess(Double totalPrice) {
+                                        double finalPrice = totalPrice; //discount will be used later
+                                        Order order = new Order();
+                                        order.setUserId(Common.currentUser.getUid());
+                                        order.setUserName(Common.currentUser.getName());
+                                        order.setUserPhone(Common.currentUser.getPhone());
+                                        order.setShippingAddress(address);
+                                        order.setComment(comment);
+
+                                        if(currentLocation != null)
+                                        {
+                                            order.setLat(currentLocation.getLatitude());
+                                            order.setLng(currentLocation.getLongitude());
+                                        }
+                                        else
+                                        {
+                                            order.setLat(-0.1f);
+                                            order.setLng(-0.1f);
+                                        }
+                                        order.setCartItemList(cartItems);
+                                        order.setTotalPayment(totalPrice);
+                                        order.setDiscount(0); //to be modified later
+                                        order.setFinalPayment(finalPrice);
+                                        order.setCod(true);
+                                        order.setTransactionID("Cash On Delivery");
+
+                                        writeOrderToFirebase(order);
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Toast.makeText(getContext(),"" + e.getMessage(), Toast.LENGTH_SHORT).show();;
+                                    }
+                                });
+
+                    }
+                }, throwable -> {
+                        Toast.makeText(getContext(),"" + throwable.getMessage(), Toast.LENGTH_SHORT).show();;
+                }));
+    }
+
+    private void writeOrderToFirebase(Order order) {
+        FirebaseDatabase.getInstance()
+                .getReference(Common.ORDER_REF)
+                .child(Common.createOrderNumber())
+                .setValue(order)
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(),""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }).addOnCompleteListener(task -> {
+                    //write success
+                    // FIX ERROR
+                    /*cartDataSource.cleanCart(Common.currentUser.getUid())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new SingleObserver<Integer>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(Integer integer) {
+                                    //clean success
+                                    Toast.makeText(getContext(), "Order placed successfully!", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Toast.makeText(getContext(),""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });*/
+                });
     }
 
     private String getAddressFromLatLng(double latitude, double longitude) {
