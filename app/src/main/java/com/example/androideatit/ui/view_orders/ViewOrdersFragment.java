@@ -30,6 +30,7 @@ public class ViewOrdersFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 //        toolsViewModel =
 //                ViewModelProviders.of(this).get(ViewOrdersViewModel.class);
+        //ERROR
         View root = inflater.inflate(R.layout.fragment_view_order, container, false);
 //        unbinder = ButterKnife.bind(this.root);
         return root;

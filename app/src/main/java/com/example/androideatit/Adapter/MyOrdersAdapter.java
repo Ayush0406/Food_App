@@ -11,9 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.androideatit.Common.Common;
 import com.example.androideatit.R;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import Model.Order;
@@ -26,11 +29,13 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
     private Context context;
     private List<Order> orderList;
     private Calendar calendar;
+    private SimpleDateFormat simpleDateFormat;
 
     public MyOrdersAdapter(Context context, List<Order> orderList) {
         this.context = context;
         this.orderList = orderList;
         calendar = Calendar.getInstance();
+        simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     }
 
     @NonNull
@@ -42,10 +47,17 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        /*Glide.with(context).Load(orderList.get(position).getCartItemList().get(0).getFoodImage())
-                .into(holder.img_order); //load default image in cart
+//        Glide.with(context).Load(orderList.get(position).getCartItemList().get(0).getFoodImage())
+//                .into(holder.img_order); //load default image in cart
         calendar.setTimeInMillis(orderList.get(position).getCreateDate());
-        Date date = new Date*/
+        Date date = new Date(orderList.get(position).getCreateDate());
+        holder.txt_order_date.setText(new StringBuilder(Common.getDateofWeek(calendar.get(Calendar.DAY_OF_WEEK)))
+        .append(" ")
+        .append(simpleDateFormat.format(date)));
+        holder.txt_order_number.setText(new StringBuilder("Order Number: ")
+        .append(orderList.get(position).getOrderNumber()));
+        holder.txt_order_comment.setText(new StringBuilder("Comment").append(orderList.get(position).getComment()));
+        holder.txt_order_status.setText(new StringBuilder("Status: ").append(Common.convertStatusToText(orderList.get(position).getOrderStatus())));
     }
 
     @Override
@@ -59,8 +71,8 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
         TextView txt_order_status;
         @BindView(R.id.txt_order_comment)
         TextView txt_order_comment;
-        @BindView(R.id.txt_order_data)
-        TextView txt_order_data;
+        @BindView(R.id.txt_order_date)
+        TextView txt_order_date;
         @BindView(R.id.txt_order_number)
         TextView txt_order_number;
         @BindView(R.id.img_order)
