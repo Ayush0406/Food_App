@@ -20,11 +20,12 @@ import Model.SizeModel;
 import Model.User;
 
 public class Common {
+    public static final String ORDER_REF = "Orders";
     public static CategoryModel categorySelected;
     public static User currentUser;
     public static FoodModel selectedFood;
     public static String Uid;
-    public static final String ORDER_REF = "Orders";
+
 
     public static void setUid(String uid) {
         Uid = uid;

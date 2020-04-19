@@ -1,12 +1,18 @@
 package com.example.androideatit.ui.cart;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.Looper;
 
+import android.provider.ContactsContract;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -25,15 +31,18 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.ColumnInfo;
 import androidx.room.Update;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.androideatit.Adapter.MyCartAdapter;
 import com.example.androideatit.Common.Common;
+import com.example.androideatit.Common.MySwipeHelper;
 import com.example.androideatit.Database.CartDataSource;
 import com.example.androideatit.Database.CartDatabase;
 import com.example.androideatit.Database.CartItem;
 import com.example.androideatit.Database.LocalCartDataSource;
+import com.example.androideatit.EventBus.CounterCartEvent;
 import com.example.androideatit.EventBus.HideFABCart;
 import com.example.androideatit.EventBus.UpdateItemInCart;
 import com.example.androideatit.R;
@@ -46,6 +55,7 @@ import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.List;
 import java.util.Locale;
 
+import Model.Order;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -55,6 +65,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.Single;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -80,11 +91,13 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-
-
-
 
 
 public class CartFragment extends Fragment {
@@ -95,7 +108,6 @@ public class CartFragment extends Fragment {
     LocationCallback locationCallback;
     FusedLocationProviderClient fusedLocationProviderClient;
     Location currentLocation;
-
     private Parcelable recyclerViewState;
     private CartDataSource cartDataSource;
     @BindView(R.id.recycler_cart)
@@ -107,17 +119,25 @@ public class CartFragment extends Fragment {
     @BindView(R.id.group_place_holder)
     CardView group_place_holder;
 
-
     private Unbinder unbinder;
-
+    private MyCartAdapter adapter;
     private CartViewModel cartViewModel;
-
+    String current_value;
+    int count = Integer.parseInt(Common.currentUser.getCount());
+    Double discount = 1.0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
         View root = inflater.inflate(R.layout.fragment_cart, container, false);
         cartViewModel.initCartDataSource(getContext());
+
+        if (count >= 5 && count < 10)
+            discount = 0.95;
+
+        else if(count > 10)
+            discount = 0.90;
+
         cartViewModel.getMutableLiveDataCartItems().observe(this, new Observer<List<CartItem>>() {
             @Override
             public void onChanged(List<CartItem> cartItems) {
@@ -133,7 +153,7 @@ public class CartFragment extends Fragment {
                     group_place_holder.setVisibility(View.VISIBLE);
                     txt_empty_cart.setVisibility(View.GONE);
 
-                    MyCartAdapter adapter = new MyCartAdapter(getContext(),cartItems);
+                    adapter = new MyCartAdapter(getContext(),cartItems);
                     recycler_cart.setAdapter(adapter);
 
                 }
@@ -146,7 +166,7 @@ public class CartFragment extends Fragment {
     }
 
     private void initViews() {
-
+        setHasOptionsMenu(true);
         cartDataSource = new LocalCartDataSource(CartDatabase.getInstance(getContext()).cartDAO());
 
         EventBus.getDefault().postSticky(new HideFABCart(true));
@@ -156,13 +176,74 @@ public class CartFragment extends Fragment {
         recycler_cart.setLayoutManager(layoutManager);
         recycler_cart.addItemDecoration(new DividerItemDecoration(getContext(), layoutManager.getOrientation()));
 
+
+        MySwipeHelper mySwipeHelper = new MySwipeHelper(getContext(), recycler_cart, 200) {
+            @Override
+            public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<MyButton> buf) {
+                buf.add(new MyButton(getContext(),"Delete", 30, 0, Color.parseColor("#FF3C30"),
+                            pos -> {
+                                CartItem cartItem = adapter.getItemAtPositon(pos);
+                                cartDataSource.deleteCartItem(cartItem)
+                                        .subscribeOn(Schedulers.io())
+                                        .observeOn(AndroidSchedulers.mainThread())
+                                        .subscribe(new SingleObserver<Integer>() {
+                                            @Override
+                                            public void onSubscribe(Disposable d) {
+
+                                            }
+
+                                            @Override
+                                            public void onSuccess(Integer integer) {
+                                                adapter.notifyItemRemoved(pos);
+                                                sumAllItemInCart(); //update total price
+                                                EventBus.getDefault().postSticky(new CounterCartEvent(true)); //update FAB
+                                                Toast.makeText(getContext(), "Item deleted from cart successfully", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            @Override
+                                            public void onError(Throwable e) {
+                                                Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
+                            }));
+
+            }
+        };
+
+        sumAllItemInCart();
+    }
+
+    private void sumAllItemInCart() {
+        cartDataSource.sumPriceInCart(Common.getUid())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Double>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        
+                    }
+
+                    @Override
+                    public void onSuccess(Double aDouble) {
+                        txt_total_price.setText(new StringBuilder("Total: ").append(Common.formatPrice(aDouble*discount)));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if(!e.getMessage().contains("Query returned empty"))
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if(!EventBus.getDefault().isRegistered(this))
+        if(!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
+        }
     }
 
     @Override
@@ -231,7 +312,7 @@ public class CartFragment extends Fragment {
                     @Override
                     public void onSuccess(Double price) {
                         txt_total_price.setText(new StringBuilder("Total: ")
-                                .append(Common.formatPrice(price)));
+                                .append(Common.formatPrice(price*discount)));
                     }
 
                     @Override
@@ -241,7 +322,47 @@ public class CartFragment extends Fragment {
                 });
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_settings).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+    }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.cart_menu,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_clear_cart)
+        {
+            cartDataSource.cleanCart(Common.getUid())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleObserver<Integer>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(Integer integer) {
+                            Toast.makeText(getContext(), "Cart cleared successfully", Toast.LENGTH_SHORT).show();
+                            EventBus.getDefault().postSticky(new CounterCartEvent(true));
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @OnClick(R.id.btn_place_order)
     void onPlaceOrderCLick(){
@@ -259,14 +380,23 @@ public class CartFragment extends Fragment {
         RadioButton rdi_cod = (RadioButton)view.findViewById(R.id.rdi_cod);
 
         //Data
-//        edt_address.setText(Common.currentUser.getAddress());
+        edt_address.setText(Common.currentUser.getAddress());
 
         //Event
         rdi_home.setOnCheckedChangeListener((compoundButton, b) -> {
             if(b)
             {
-                //edt_address.setText(Common.currentUser.getAddress());
-                txt_address.setVisibility(View.GONE);
+                if(Common.currentUser.getAddress().equals(" "))
+                {
+                    edt_address.setText("");
+                    edt_address.setHint("Enter your address");
+                    txt_address.setVisibility(View.GONE);
+                }
+                else
+                {
+                    edt_address.setText(Common.currentUser.getAddress());
+                    txt_address.setVisibility(View.GONE);
+                }
             }
         });
         rdi_other_address.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -321,7 +451,6 @@ public class CartFragment extends Fragment {
         builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
             dialogInterface.dismiss();
         }).setPositiveButton("Proceed", (dialogInterface, i) -> {
-            //Toast.makeText(getContext(),"Implement later", Toast.LENGTH_SHORT).show();
             if(rdi_cod.isChecked())
                 paymentCOD(edt_address.getText().toString(), edt_comment.getText().toString());
         });
@@ -331,7 +460,99 @@ public class CartFragment extends Fragment {
     }
 
     private void paymentCOD(String address, String comment) {
+        compositeDisposable.add(cartDataSource.getAllCart(Common.getUid())
+            .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<CartItem>>() {
+                    @Override
+                    public void accept(List<CartItem> cartItems) throws Exception {
+                        //when we have all cart items we will get price
+                        cartDataSource.sumPriceInCart(Common.getUid())
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new SingleObserver<Double>() {
+                                    @Override
+                                    public void onSubscribe(Disposable d) {
+
+                                    }
+
+                                    @Override
+                                    public void onSuccess(Double totalPrice) {
+                                        double finalPrice = totalPrice * discount; //discount will be used later
+                                        Order order = new Order();
+                                        order.setUserId(Common.getUid());
+                                        order.setUserName(Common.currentUser.getName());
+                                        order.setUserPhone(Common.currentUser.getPhone());
+                                        order.setShippingAddress(address);
+                                        order.setComment(comment);
+
+                                        if(currentLocation != null)
+                                        {
+                                            order.setLat(currentLocation.getLatitude());
+                                            order.setLng(currentLocation.getLongitude());
+                                        }
+                                        else
+                                        {
+                                            order.setLat(-0.1f);
+                                            order.setLng(-0.1f);
+                                        }
+                                        order.setCartItemList(cartItems);
+                                        order.setTotalPayment(totalPrice);
+                                        order.setDiscount(0); //to be modified later
+                                        order.setFinalPayment(finalPrice);
+                                        order.setCod(true);
+                                        order.setTransactionID("Cash On Delivery");
+
+                                        writeOrderToFirebase(order);
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable e) {
+                                        Toast.makeText(getContext(),"1" + e.getMessage(), Toast.LENGTH_SHORT).show();;
+                                    }
+                                });
+
+                    }
+                }, throwable -> {
+                        Toast.makeText(getContext(),"2" + throwable.getMessage(), Toast.LENGTH_SHORT).show();;
+                }));
     }
+
+    private void writeOrderToFirebase(Order order) {
+
+        FirebaseDatabase.getInstance()
+                .getReference(Common.ORDER_REF)
+                .child(Common.createOrderNumber())
+                .setValue(order)
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(),"3"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }).addOnCompleteListener(task -> {
+                    //write success
+
+                    cartDataSource.cleanCart(Common.currentUser.getUid())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new SingleObserver<Integer>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(Integer integer) {
+                                    //clean success
+                                    updateUserCount();
+                                    Toast.makeText(getContext(), "Order placed successfully!", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    Toast.makeText(getContext(),"4"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                });
+    }
+
 
     private String getAddressFromLatLng(double latitude, double longitude) {
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
@@ -378,4 +599,23 @@ public class CartFragment extends Fragment {
         locationRequest.setSmallestDisplacement(10f);
     }
 
+    public void updateUserCount() {
+
+        current_value = Common.currentUser.getCount();
+        current_value = Integer.toString(Integer.parseInt(current_value) + 1);
+
+        FirebaseDatabase.getInstance().getReference("User")
+                .child(Common.getUid())
+                .child("count")
+                .setValue(current_value);
+
+    }
+
 }
+
+/* https://www.youtube.com/watch?v=IS3jV84u2y4&list=PLaoF-xhnnrRXx3V3mLCwYzAdcT_I9RxgL&index=29
+18:09
+onLoadTimeSuccess
+on Load time failed
+PROBABLE ERROR
+ */

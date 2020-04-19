@@ -65,8 +65,6 @@ public class SignIn extends AppCompatActivity {
 
     Button btnDeliverySignIn;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

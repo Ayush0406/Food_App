@@ -42,6 +42,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
@@ -73,7 +74,7 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
     BottomSheetDialog addonBottomSheetDialog;
     ChipGroup chip_group_addon;
     EditText edt_search;
-
+    Double discount = 1.0;
     @BindView(R.id.img_food)
     ImageView img_food;
     @BindView(R.id.btnCart)
@@ -88,11 +89,12 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
     TextView food_price;
     @BindView(R.id.number_button)
     ElegantNumberButton numberButton;
-    @BindView(R.id.ratingBar)
-    RatingBar ratingBar;
+//    @BindView(R.id.ratingBar)
+//    RatingBar ratingBar;
     @BindView(R.id.btnShowComment)
     Button btnShowComment;
-
+    @BindView(R.id.food_price_total)
+    TextView food_price_total;
     @BindView(R.id.rdi_group_size)
     RadioGroup rdi_group_size;
     @BindView(R.id.img_add_addon)
@@ -102,11 +104,18 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
 
     @OnClick(R.id.img_add_addon)
     void onAddonClick(){
+//        FirebaseDatabase.getInstance().getReference("category").child(Common.currentUser.get)
         if(Common.selectedFood.getAddon() != null){
             displayAddonList(); //show all addon options
             addonBottomSheetDialog.show();
         }
+
+//        else{
+//            List
+//            Common.selectedFood.setAddon(List<AddonModel> addon);
+//        }
     }
+
 
     @OnClick(R.id.btnCart)
     void onCartItemAdd(){
@@ -122,6 +131,11 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
             cartItem.setFoodSize(new Gson().toJson(Common.selectedFood.getUserSelectedSize()));
         else
             cartItem.setFoodSize("Default");
+
+        if(Common.selectedFood.getUserSelectedAddon() != null)
+            cartItem.setFoodAddon(new Gson().toJson(Common.selectedFood.getUserSelectedAddon()));
+        else
+            cartItem.setFoodAddon("Default");
 
         cartDataSource.getItemWithAllOptionsInCart(Common.getUid(),
                 cartItem.getFoodId(),
@@ -281,12 +295,13 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
                     //remove when deleted
                     chip_group_user_selected_addon.removeView(view);
                     Common.selectedFood.getUserSelectedAddon().remove(addonModel);
+                    calculateTotalPrice();
                 });
 
                 chip_group_user_selected_addon.addView(chip);
 
             }
-        }else if (Common.selectedFood.getUserSelectedAddon().size() == 0)
+        }else
             chip_group_user_selected_addon.removeAllViews();
     }
 
@@ -295,8 +310,16 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
         food_name.setText(new StringBuilder(foodModel.getName()));
         food_description.setText(new StringBuilder(foodModel.getDescription()));
         food_price.setText(new StringBuilder(foodModel.getPrice().toString()));
+        food_price_total.setText(new StringBuilder(foodModel.getPrice().toString()));
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(Common.selectedFood.getName());
+
+        numberButton.setOnClickListener(new ElegantNumberButton.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                calculateTotalPrice(); // update price
+            }
+        });
 
         //size
 
@@ -345,11 +368,29 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
             if(Common.selectedFood.getUserSelectedSize() != null)
                 totalPrice += Double.parseDouble(Common.selectedFood.getUserSelectedSize().getPrice().toString());
 
-
-            displayPrice = totalPrice * (Integer.parseInt(numberButton.getNumber()));
+            int num = Integer.parseInt(numberButton.getNumber());
+            displayPrice = totalPrice * (num);
             displayPrice = Math.round(displayPrice * 100.0/100.0);
 
-            food_price.setText(new StringBuilder("").append(Common.formatPrice(displayPrice)).toString());
+            food_price.setText(new StringBuilder("").append(Common.formatPrice(displayPrice/num)).toString());
+
+            int count = Integer.parseInt(Common.currentUser.getCount());
+
+            if (count >= 5 && count < 10) {
+                discount = 0.95;
+                displayPrice = discount * displayPrice;
+                food_price_total.setText(new StringBuilder("")
+                        .append(Common.formatPrice(displayPrice)
+                                +"           - 5% Discount Applied").toString());
+            }
+                else if (count >= 10) {
+                discount = 0.9;
+                displayPrice = discount * displayPrice;
+                food_price_total.setText(new StringBuilder("")
+                        .append(Common.formatPrice(displayPrice)
+                                +"           - 10% Discount Applied").toString());
+            }
+
     }
 
     @Override
@@ -391,4 +432,7 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
         compositeDisposable.clear();
         super.onStop();
     }
+
+
 }
+

@@ -27,7 +27,7 @@ public interface CartDataSource {
 
     Single <Integer> deleteCartItem(CartItem cartItem);
 
-    Single<Integer> cleanCart(String foodId, String uid);
+    Single<Integer> cleanCart(String uid);
 
     Single<CartItem> getItemWithAllOptionsInCart(String uid, String foodId, String foodSize, String foodAddon);
 
