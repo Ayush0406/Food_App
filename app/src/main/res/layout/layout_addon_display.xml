@@ -15,7 +15,7 @@
         android:layout_marginTop = "8dp"
         android:layout_marginRight = "10dp"
         android:text = "Addon"
-        android:fontFamily="@font/brandon_medium"
+        android:fontFamily="@font/CooperHewitt-Bold"
         android:textColor="@color/colorPrimary"
         android:textSize="24sp"
         android:textStyle="bold" />

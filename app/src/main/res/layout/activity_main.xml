@@ -11,30 +11,32 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp">
+        android:layout_marginTop="125dp"
+        android:layout_marginLeft="55dp">
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="142dp"
-            android:fontFamily="cursive"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:fontFamily="@font/cooperhewitt_bold"
             android:gravity="center"
             android:text="@string/Logo_name"
             android:textAlignment="center"
-            android:textColor="#FFEBEE"
-            android:textSize="80sp"
-            android:textStyle="bold|italic">
+            android:textColor="#fccbbf"
+            android:textSize="60sp"
+            android:textStyle="normal">
 
         </TextView>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
             android:gravity="center"
-            android:textSize="25sp"
-            android:textColor="@android:color/white"
-            android:fontFamily="sans-serif-medium"
-            android:text="@string/s_logan"
+            android:textSize="40sp"
+            android:textColor="#c75c41"
+            android:fontFamily="@font/tahu"
+            android:text="something human"
             android:id="@+id/txtSlogan"
             android:textAlignment="center"
 
@@ -49,17 +51,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
         android:weightSum="2"
         >
 
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnSignUp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:background="#2196F3"
+            android:background="#c75c41"
             android:text="@string/sign_up"
             android:textColor="@android:color/white">
             <!--            app:buttonColor= "#39796b"-->
@@ -67,15 +70,15 @@
             <!--            app:shadowEnabled="true"-->
             <!--            app:shadowHeight="5dp"-->
             <!--            app:cornerRadius="4dp">-->
-        </Button>
+        </android.widget.Button>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnSignIn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:background="#CDDC39"
+            android:background="#c75c41"
             android:text="@string/sign_in"
             android:textColor="@android:color/white">
             <!--            app:buttonColor="@color/btnSignActive"-->
@@ -84,7 +87,7 @@
             <!--            app:shadowHeight="5dp"-->
             <!--            app:cornerRadius="4dp"-->
 
-        </Button>
+        </android.widget.Button>
 
     </LinearLayout>
 

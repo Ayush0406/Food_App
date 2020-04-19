@@ -17,7 +17,7 @@
     <TextView
         android:id="@+id/txt_empty_cart"
         android:text="EMPTY CART"
-        android:fontFamily="@font/brandon_medium"
+        android:fontFamily="@font/CooperHewitt-Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -44,7 +44,7 @@
             <TextView
                 android:id="@+id/txt_total_price"
                 android:text="Total: 0,0"
-                android:fontFamily="@font/brandon_medium"
+                android:fontFamily="@font/CooperHewitt-Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

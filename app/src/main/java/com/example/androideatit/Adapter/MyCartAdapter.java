@@ -68,7 +68,6 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.MyViewHold
                 .append(Common.formatPrice(temp * discount)));
         holder.numberButton.setNumber(String.valueOf(cartItemList.get(position).getFoodQuantity()));
 
-
         //event
         holder.numberButton.setOnValueChangeListener((view,oldValue, newValue) -> {
             //this button when clicked by the user updates database
