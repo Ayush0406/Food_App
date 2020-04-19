@@ -12,6 +12,7 @@
     tools:context=".SignIn">
 
 
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_marginLeft="8dp"
@@ -105,11 +106,12 @@
         </LinearLayout>
 
         <Button
-            android:textColor="@android:color/white"
+            android:id="@+id/btn_delivery_signin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#9F0A0A"
-            android:text="Not a Customer?" />
+            android:text="Not a Customer?"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 

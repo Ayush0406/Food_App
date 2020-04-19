@@ -275,3 +275,4 @@ public abstract class MySwipeHelper extends ItemTouchHelper.SimpleCallback {
     }
 
 }
+

@@ -23,7 +23,7 @@
     <string name="menu_food_list">Food List</string>
     <string name="menu_food_detail">Food Detail</string>
     <string name="size">Size</string>
-    <string name= "add_on">Addon</string>
+    <string name="add_on">Addon</string>
     <string name="menu_cart">Cart</string>
     <string name= "action_clear_cart">Clear Cart</string>
     <string name="menu_view_orders">View Orders</string>

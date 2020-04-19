@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignInDelivery"
+    android:background="@drawable/tangerines_fruit_bowl_citrus_108334_2160x3840">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="6"
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_centerInParent="true">
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/edt_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:text="0988123344"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            android:textSize="25sp"
+            app:met_baseColor="@android:color/white"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@android:color/white"
+            app:met_singleLineEllipsis="true" />
+
+<!--        <com.rengwuxian.materialedittext.MaterialEditText-->
+<!--            android:id="@+id/edt_mail"-->
+<!--            android:hint="Email"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="test@gmail.com"-->
+<!--            android:textColorHint="@android:color/white"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:textSize="34sp"-->
+<!--            android:inputType="text"-->
+<!--            app:met_baseColor="@android:color/white"-->
+<!--            app:met_floatingLabel="highlight"-->
+<!--            app:met_primaryColor="@android:color/white"-->
+<!--            app:met_singleLineEllipsis="true"-->
+<!--            />-->
+
+<!--        <com.rengwuxian.materialedittext.MaterialEditText-->
+<!--            android:id="@+id/edt_name"-->
+<!--            android:hint="Name"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Delivery Boy"-->
+<!--            android:textColorHint="@android:color/white"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:textSize="25sp"-->
+<!--            android:inputType="text"-->
+<!--            app:met_baseColor="@android:color/white"-->
+<!--            app:met_floatingLabel="highlight"-->
+<!--            app:met_primaryColor="@android:color/white"-->
+<!--            app:met_singleLineEllipsis="true"-->
+<!--            />-->
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/edt_password"
+            android:hint="Password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1234"
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"
+            android:textSize="25sp"
+            android:inputType="textPassword"
+            app:met_baseColor="@android:color/white"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@android:color/white"
+            app:met_singleLineEllipsis="true"
+            />
+
+<!--        <com.rengwuxian.materialedittext.MaterialEditText-->
+<!--            android:id="@+id/edt_address"-->
+<!--            android:hint="Address"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="Sector 5, Hiran Magri, Udaipur"-->
+<!--            android:textColorHint="@android:color/white"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:textSize="25sp"-->
+<!--            android:inputType="text"-->
+<!--            app:met_baseColor="@android:color/white"-->
+<!--            app:met_floatingLabel="highlight"-->
+<!--            app:met_primaryColor="@android:color/white"-->
+<!--            app:met_singleLineEllipsis="true"-->
+<!--            />-->
+
+<!--        <com.rengwuxian.materialedittext.MaterialEditText-->
+<!--            android:id="@+id/edt_radius"-->
+<!--            android:hint="Coverage Radius"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="10"-->
+<!--            android:textColorHint="@android:color/white"-->
+<!--            android:textColor="@android:color/white"-->
+<!--            android:textSize="25sp"-->
+<!--            android:inputType="phone"-->
+<!--            app:met_baseColor="@android:color/white"-->
+<!--            app:met_floatingLabel="highlight"-->
+<!--            app:met_primaryColor="@android:color/white"-->
+<!--            app:met_singleLineEllipsis="true"-->
+<!--            />-->
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        >
+
+        <Button
+            android:id="@+id/btn_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#CDDC39"
+            android:text="@string/sign_in"
+            android:textColor="@android:color/white"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_margin="8dp"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>
