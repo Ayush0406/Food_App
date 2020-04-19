@@ -108,7 +108,6 @@ public class CartFragment extends Fragment {
     LocationCallback locationCallback;
     FusedLocationProviderClient fusedLocationProviderClient;
     Location currentLocation;
-
     private Parcelable recyclerViewState;
     private CartDataSource cartDataSource;
     @BindView(R.id.recycler_cart)
@@ -124,13 +123,21 @@ public class CartFragment extends Fragment {
     private MyCartAdapter adapter;
     private CartViewModel cartViewModel;
     String current_value;
-
+    int count = Integer.parseInt(Common.currentUser.getCount());
+    Double discount = 1.0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
         View root = inflater.inflate(R.layout.fragment_cart, container, false);
         cartViewModel.initCartDataSource(getContext());
+
+        if (count >= 5 && count < 10)
+            discount = 0.95;
+
+        else if(count > 10)
+            discount = 0.90;
+
         cartViewModel.getMutableLiveDataCartItems().observe(this, new Observer<List<CartItem>>() {
             @Override
             public void onChanged(List<CartItem> cartItems) {
@@ -219,7 +226,7 @@ public class CartFragment extends Fragment {
 
                     @Override
                     public void onSuccess(Double aDouble) {
-                        txt_total_price.setText(new StringBuilder("Total: ").append(Common.formatPrice(aDouble)));
+                        txt_total_price.setText(new StringBuilder("Total: ").append(Common.formatPrice(aDouble*discount)));
                     }
 
                     @Override
@@ -305,7 +312,7 @@ public class CartFragment extends Fragment {
                     @Override
                     public void onSuccess(Double price) {
                         txt_total_price.setText(new StringBuilder("Total: ")
-                                .append(Common.formatPrice(price)));
+                                .append(Common.formatPrice(price*discount)));
                     }
 
                     @Override
@@ -471,7 +478,7 @@ public class CartFragment extends Fragment {
 
                                     @Override
                                     public void onSuccess(Double totalPrice) {
-                                        double finalPrice = totalPrice; //discount will be used later
+                                        double finalPrice = totalPrice * discount; //discount will be used later
                                         Order order = new Order();
                                         order.setUserId(Common.getUid());
                                         order.setUserName(Common.currentUser.getName());
@@ -512,7 +519,7 @@ public class CartFragment extends Fragment {
     }
 
     private void writeOrderToFirebase(Order order) {
-        System.out.println("atleast print works");
+
         FirebaseDatabase.getInstance()
                 .getReference(Common.ORDER_REF)
                 .child(Common.createOrderNumber())
@@ -594,22 +601,14 @@ public class CartFragment extends Fragment {
 
     public void updateUserCount() {
 
-        System.out.println("something else is not happening");
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("User");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                current_value = dataSnapshot.getValue(String.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("TAG", "onCancelled", databaseError.toException());
-            }
-        });
+        current_value = Common.currentUser.getCount();
         current_value = Integer.toString(Integer.parseInt(current_value) + 1);
-        System.out.println("This should be working!");
-        FirebaseDatabase.getInstance().getReference("User").child(Common.getUid()).setValue(current_value);
+
+        FirebaseDatabase.getInstance().getReference("User")
+                .child(Common.getUid())
+                .child("count")
+                .setValue(current_value);
+
     }
 
 }
