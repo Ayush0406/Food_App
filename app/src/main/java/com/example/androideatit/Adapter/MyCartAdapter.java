@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.example.androideatit.Common.Common;
 import com.example.androideatit.Database.CartItem;
 import com.example.androideatit.EventBus.UpdateItemInCart;
 import com.example.androideatit.R;
@@ -45,13 +46,26 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        Double temp = cartItemList.get(position).getFoodPrice() + cartItemList.get(position)
+                .getFoodExtraPrice();
+        Double discount = 1.0;
+        int count = Integer.parseInt(Common.currentUser.getCount());
+
+        if (count >= 5 && count < 10)
+            discount = 0.95;
+
+        else if(count >= 10)
+            discount = 0.90;
+
+
+
         Glide.with(context).load(cartItemList.get(position).getFoodImage())
         .into(holder.img_cart);
         holder.txt_food_name.setText(new StringBuilder(cartItemList.get(position).getFoodName()));
-        holder.txt_food_price.setText(new StringBuilder("")
-                .append(cartItemList.get(position).getFoodPrice() + cartItemList.get(position)
-                .getFoodExtraPrice()));
-
+        holder.txt_food_price.setText(new StringBuilder("Total: ")
+                .append(Common.formatPrice(temp)));
+        holder.txt_final_price.setText(new StringBuilder("After Discount: ")
+                .append(Common.formatPrice(temp * discount)));
         holder.numberButton.setNumber(String.valueOf(cartItemList.get(position).getFoodQuantity()));
 
 
@@ -80,6 +94,8 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.MyViewHold
         ImageView img_cart;
         @BindView(R.id.txt_food_price)
         TextView txt_food_price;
+        @BindView(R.id.txt_final_price)
+        TextView txt_final_price;
         @BindView(R.id.txt_food_name)
         TextView txt_food_name;
         @BindView(R.id.number_button)
