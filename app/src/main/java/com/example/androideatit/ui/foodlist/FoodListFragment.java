@@ -51,6 +51,7 @@ public class FoodListFragment extends Fragment {
             @Override
             public void onChanged(List<FoodModel> foodModels) {
                 adapter = new MyFoodListAdapter(getContext(), foodModels);
+                System.out.println("reached");
                 recycler_food_list.setAdapter(adapter);
                 recycler_food_list.setLayoutAnimation(layoutAnimationController);
             }

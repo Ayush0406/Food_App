@@ -79,5 +79,7 @@ dependencies {
     //For maps
     implementation 'com.karumi:dexter:5.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.karumi:dexter:6.1.0'
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
 
 }

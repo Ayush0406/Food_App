@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -20,6 +23,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.androideatit.Common.Common;
+import com.example.androideatit.Delivery.order.OrderFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -59,6 +63,8 @@ public class SignIn extends AppCompatActivity {
     DatabaseReference table_user;
     AlertDialog dialog;
 
+    Button btnDeliverySignIn;
+
 
 
     @Override
@@ -75,6 +81,9 @@ public class SignIn extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         table_user = database.getReference("User"); //name of database in firebase
+
+        btnDeliverySignIn = (Button) findViewById(R.id.btn_delivery_signin);
+
 
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -151,6 +160,17 @@ public class SignIn extends AppCompatActivity {
                 });
             }
         });
+
+
+        btnDeliverySignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent home_delivery = new Intent(SignIn.this, HomeDelivery.class);
+                startActivity(home_delivery);
+            }
+        });
+
+
 
     }
 
