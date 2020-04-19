@@ -36,6 +36,7 @@ import androidx.room.Update;
 
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.example.androideatit.Adapter.MyCartAdapter;
+import com.example.androideatit.Callback.ILoadTimeFromFirebaseListener;
 import com.example.androideatit.Common.Common;
 import com.example.androideatit.Common.MySwipeHelper;
 import com.example.androideatit.Database.CartDataSource;
@@ -52,6 +53,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.nio.file.attribute.UserPrincipalNotFoundException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -100,7 +103,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
 
 
-public class CartFragment extends Fragment {
+public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListener {
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -122,6 +125,9 @@ public class CartFragment extends Fragment {
     private Unbinder unbinder;
     private MyCartAdapter adapter;
     private CartViewModel cartViewModel;
+
+    ILoadTimeFromFirebaseListener listener;
+
     String current_value;
     int count = Integer.parseInt(Common.currentUser.getCount());
     Double discount = 1.0;
@@ -137,6 +143,8 @@ public class CartFragment extends Fragment {
 
         else if(count > 10)
             discount = 0.90;
+
+        listener = this;
 
         cartViewModel.getMutableLiveDataCartItems().observe(this, new Observer<List<CartItem>>() {
             @Override
@@ -503,7 +511,8 @@ public class CartFragment extends Fragment {
                                         order.setCod(true);
                                         order.setTransactionID("Cash On Delivery");
 
-                                        writeOrderToFirebase(order);
+                                        //writeOrderToFirebase(order);
+                                        syncLocalTimeWithGlobalTime(order);
                                     }
 
                                     @Override
@@ -516,6 +525,29 @@ public class CartFragment extends Fragment {
                 }, throwable -> {
                         Toast.makeText(getContext(),"2" + throwable.getMessage(), Toast.LENGTH_SHORT).show();;
                 }));
+    }
+
+    private void syncLocalTimeWithGlobalTime(Order order) {
+        final DatabaseReference offsetRef = FirebaseDatabase.getInstance().getReference(".info/serverTimeOffset");
+        offsetRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long offset = dataSnapshot.getValue(Long.class);
+                long estimateServerTimeMs = System.currentTimeMillis() + offset;
+                //offset is missing time between your local time and server time
+                SimpleDateFormat sdf = new SimpleDateFormat("dd MMM,yyyy HH:mm");
+                Date resultDate = new Date(estimateServerTimeMs);
+
+                Log.d("TEST_DATE", ""+sdf.format(resultDate));
+                listener.onLoadTimeSuccess(order, estimateServerTimeMs);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                listener.onLoadTimeFailed(databaseError.getMessage());
+            }
+        });
     }
 
     private void writeOrderToFirebase(Order order) {
@@ -611,11 +643,15 @@ public class CartFragment extends Fragment {
 
     }
 
-}
+    @Override
+    public void onLoadTimeSuccess(Order order, long estimateTimeInMs) {
+        order.setCreateDate(estimateTimeInMs);
+        order.setOrderStatus(0);
+        writeOrderToFirebase(order);
+    }
 
-/* https://www.youtube.com/watch?v=IS3jV84u2y4&list=PLaoF-xhnnrRXx3V3mLCwYzAdcT_I9RxgL&index=29
-18:09
-onLoadTimeSuccess
-on Load time failed
-PROBABLE ERROR
- */
+    @Override
+    public void onLoadTimeFailed(String message) {
+        Toast.makeText(getContext(),""+message, Toast.LENGTH_SHORT).show();
+    }
+}

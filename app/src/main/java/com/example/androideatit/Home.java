@@ -233,6 +233,13 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void countCartAgain(CounterCartEvent event)
+    {
+        if(event.isSuccess())
+            countCartItem();
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onMenuItemBack(MenuItemBack event)
     {
         menuClickId = -1;
