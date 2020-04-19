@@ -20,7 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androideatit.Adapter.MyCategoriesAdapter;
 import com.example.androideatit.Common.SpacesItemDecoration;
+import com.example.androideatit.EventBus.MenuItemBack;
 import com.example.androideatit.R;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,4 +91,11 @@ public class MenuFragment extends Fragment {
         recycler_menu.addItemDecoration(new SpacesItemDecoration(8));
 
     }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().postSticky(new MenuItemBack());
+        super.onDestroy();
+    }
+
 }

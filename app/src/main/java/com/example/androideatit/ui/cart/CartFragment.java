@@ -45,6 +45,7 @@ import com.example.androideatit.Database.CartItem;
 import com.example.androideatit.Database.LocalCartDataSource;
 import com.example.androideatit.EventBus.CounterCartEvent;
 import com.example.androideatit.EventBus.HideFABCart;
+import com.example.androideatit.EventBus.MenuItemBack;
 import com.example.androideatit.EventBus.UpdateItemInCart;
 import com.example.androideatit.R;
 
@@ -653,5 +654,11 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
     @Override
     public void onLoadTimeFailed(String message) {
         Toast.makeText(getContext(),""+message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().postSticky(new MenuItemBack());
+        super.onDestroy();
     }
 }

@@ -243,7 +243,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     public void onMenuItemBack(MenuItemBack event)
     {
         menuClickId = -1;
-        navController.popBackStack(R.id.nav_home, true);
+        if(getSupportFragmentManager().getBackStackEntryCount() > 0)
+            getSupportFragmentManager().popBackStack();
     }
 
 
