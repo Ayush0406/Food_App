@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.Looper;
 
+import android.provider.ContactsContract;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -89,7 +91,11 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 
@@ -117,6 +123,7 @@ public class CartFragment extends Fragment {
     private Unbinder unbinder;
     private MyCartAdapter adapter;
     private CartViewModel cartViewModel;
+    String current_value;
 
     @Nullable
     @Override
@@ -505,6 +512,7 @@ public class CartFragment extends Fragment {
     }
 
     private void writeOrderToFirebase(Order order) {
+        System.out.println("atleast print works");
         FirebaseDatabase.getInstance()
                 .getReference(Common.ORDER_REF)
                 .child(Common.createOrderNumber())
@@ -526,6 +534,7 @@ public class CartFragment extends Fragment {
                                 @Override
                                 public void onSuccess(Integer integer) {
                                     //clean success
+                                    updateUserCount();
                                     Toast.makeText(getContext(), "Order placed successfully!", Toast.LENGTH_SHORT).show();
                                 }
 
@@ -536,6 +545,7 @@ public class CartFragment extends Fragment {
                             });
                 });
     }
+
 
     private String getAddressFromLatLng(double latitude, double longitude) {
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
@@ -580,6 +590,26 @@ public class CartFragment extends Fragment {
         locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(3000);
         locationRequest.setSmallestDisplacement(10f);
+    }
+
+    public void updateUserCount() {
+
+        System.out.println("something else is not happening");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("User");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                current_value = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("TAG", "onCancelled", databaseError.toException());
+            }
+        });
+        current_value = Integer.toString(Integer.parseInt(current_value) + 1);
+        System.out.println("This should be working!");
+        FirebaseDatabase.getInstance().getReference("User").child(Common.getUid()).setValue(current_value);
     }
 
 }
