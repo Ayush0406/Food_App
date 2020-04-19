@@ -180,7 +180,7 @@ public class CartFragment extends Fragment {
         MySwipeHelper mySwipeHelper = new MySwipeHelper(getContext(), recycler_cart, 200) {
             @Override
             public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<MyButton> buf) {
-                buf.add(new MyButton(getContext(),"Delete", 30, 0, Color.parseColor("FF3C30"),
+                buf.add(new MyButton(getContext(),"Delete", 30, 0, Color.parseColor("#FF3C30"),
                             pos -> {
                                 CartItem cartItem = adapter.getItemAtPositon(pos);
                                 cartDataSource.deleteCartItem(cartItem)
@@ -205,12 +205,12 @@ public class CartFragment extends Fragment {
                                                 Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                                             }
                                         });
-                                Toast.makeText(getContext(), "Deleting item", Toast.LENGTH_SHORT).show();
 
                             }));
 
             }
         };
+
         sumAllItemInCart();
     }
 
