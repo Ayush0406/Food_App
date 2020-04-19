@@ -8,7 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/pancakes_nutella_fruits_145225_2160x3840"
+    android:background="@drawable/img1"
     tools:context=".SignIn">
 
 
@@ -24,17 +24,17 @@
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/edtPhone"
-            android:hint="Phone Number"
+            android:hint="@string/edit_text_hint1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="0988123344"
-            android:textColorHint="@android:color/white"
-            android:textColor="@android:color/white"
+            android:text=""
+            android:textColorHint="#fccbbf"
+            android:textColor="#fccbbf"
             android:textSize="34sp"
             android:inputType="text"
-            app:met_baseColor="@android:color/white"
+            app:met_baseColor="#fccbbf"
             app:met_floatingLabel="highlight"
-            app:met_primaryColor="@android:color/white"
+            app:met_primaryColor="#fccbbf"
             app:met_singleLineEllipsis="true"
             />
 
@@ -43,14 +43,14 @@
             android:hint="Password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1234"
-            android:textColorHint="@android:color/white"
-            android:textColor="@android:color/white"
+            android:text=""
+            android:textColorHint="#fccbbf"
+            android:textColor="#fccbbf"
             android:textSize="34sp"
             android:inputType="textPassword"
-            app:met_baseColor="@android:color/white"
+            app:met_baseColor="#fccbbf"
             app:met_floatingLabel="highlight"
-            app:met_primaryColor="@android:color/white"
+            app:met_primaryColor="#fccbbf"
             app:met_singleLineEllipsis="true"
             />
 
@@ -84,7 +84,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnSignIn"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -93,7 +93,7 @@
             android:layout_marginLeft="8dp"
             android:layout_margin="8dp"
             android:layout_alignParentBottom="true"
-            android:background="#CDDC39"
+            android:background="#c75c41"
             android:text="@string/sign_in"
             android:textColor="@android:color/white">
             <!--            app:buttonColor="@color/btnSignActive"-->
@@ -102,14 +102,14 @@
             <!--            app:shadowHeight="5dp"-->
             <!--            app:cornerRadius="4dp"-->
 
-        </Button>
+        </android.widget.Button>
         </LinearLayout>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_delivery_signin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#9F0A0A"
+            android:background="#c75c41"
             android:text="Not a Customer?"
             android:textColor="@android:color/white" />
 

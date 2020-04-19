@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/pancakes_nutella_fruits_145225_2160x3840"
+    android:background="img1"
     tools:context=".SignUp">
 
     <LinearLayout

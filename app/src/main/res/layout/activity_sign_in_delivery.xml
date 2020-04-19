@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignInDelivery"
-    android:background="@drawable/tangerines_fruit_bowl_citrus_108334_2160x3840">
+    android:background="@drawable/img">
     
     <LinearLayout
         android:layout_width="match_parent"
