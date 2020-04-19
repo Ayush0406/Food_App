@@ -24,7 +24,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
-import com.example.androideatit.Adapter.MyOrderAdapter;
+import com.example.androideatit.Adapter.MyOrderAdapter_d;
 import com.example.androideatit.Common.MySwipeHelper;
 import com.example.androideatit.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -51,7 +51,7 @@ public class OrderFragment extends Fragment {
 
     Unbinder unbinder;
     LayoutAnimationController layoutAnimationController;
-    MyOrderAdapter adapter;
+    MyOrderAdapter_d adapter;
 
     private OrderViewModel orderViewModel;
 
@@ -69,7 +69,7 @@ public class OrderFragment extends Fragment {
         });
 
         orderViewModel.getOrderModelMutableLiveData().observe(this, orderModels->{
-                adapter = new MyOrderAdapter(getContext(), orderModels);
+                adapter = new MyOrderAdapter_d(getContext(), orderModels);
                 recycler_order.setAdapter(adapter);
                 recycler_order.setLayoutAnimation(layoutAnimationController);
         });

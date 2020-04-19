@@ -14,7 +14,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/img_food_image_delivery"
+            android:id="@+id/img_food_image_delivery_d"
             android:scaleType="fitXY"
             android:layout_width="0dp"
             android:layout_weight="3"
@@ -32,7 +32,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txt_order_number"
+                android:id="@+id/txt_order_number_d"
                 android:text="26/11/2019 13:05:06"
                 android:textColor="@android:color/holo_blue_light"
                 android:fontFamily="@font/brandon_medium"
@@ -43,7 +43,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txt_time"
+                android:id="@+id/txt_time_d"
                 android:text="Order Date: avbfbiuebifbwe"
                 android:fontFamily="@font/brandon_medium"
                 android:textStyle="italic"
@@ -54,7 +54,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txt_name"
+                android:id="@+id/txt_name_d"
                 android:text="Name: David"
                 android:fontFamily="@font/brandon_medium"
                 android:textStyle="italic"
@@ -65,7 +65,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txt_order_status"
+                android:id="@+id/txt_order_status_d"
                 android:text="Order Staus: Place"
                 android:fontFamily="@font/brandon_medium"
                 android:textStyle="italic"
@@ -75,7 +75,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txt_num_item"
+                android:id="@+id/txt_num_item_d"
                 android:text="Num of Items: 10"
                 android:fontFamily="@font/brandon_medium"
                 android:textStyle="italic"
