@@ -59,8 +59,6 @@ public class SignIn extends AppCompatActivity {
     DatabaseReference table_user;
     AlertDialog dialog;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

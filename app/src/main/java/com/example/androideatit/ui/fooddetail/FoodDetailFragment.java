@@ -74,7 +74,7 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
     BottomSheetDialog addonBottomSheetDialog;
     ChipGroup chip_group_addon;
     EditText edt_search;
-
+    Double discount = 1.0;
     @BindView(R.id.img_food)
     ImageView img_food;
     @BindView(R.id.btnCart)
@@ -373,7 +373,23 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
             displayPrice = Math.round(displayPrice * 100.0/100.0);
 
             food_price.setText(new StringBuilder("").append(Common.formatPrice(displayPrice/num)).toString());
-            food_price_total.setText(new StringBuilder("").append(Common.formatPrice(displayPrice)).toString());
+
+            int count = Integer.parseInt(Common.currentUser.getCount());
+
+            if (count >= 5 && count < 10) {
+                discount = 0.95;
+                displayPrice = discount * displayPrice;
+                food_price_total.setText(new StringBuilder("")
+                        .append(Common.formatPrice(displayPrice)
+                                +"           - 5% Discount Applied").toString());
+            }
+                else if (count >= 10) {
+                discount = 0.9;
+                displayPrice = discount * displayPrice;
+                food_price_total.setText(new StringBuilder("")
+                        .append(Common.formatPrice(displayPrice)
+                                +"           - 10% Discount Applied").toString());
+            }
 
     }
 

@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.Looper;
 
+import android.provider.ContactsContract;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -89,7 +91,11 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 
@@ -102,7 +108,6 @@ public class CartFragment extends Fragment {
     LocationCallback locationCallback;
     FusedLocationProviderClient fusedLocationProviderClient;
     Location currentLocation;
-
     private Parcelable recyclerViewState;
     private CartDataSource cartDataSource;
     @BindView(R.id.recycler_cart)
@@ -117,13 +122,22 @@ public class CartFragment extends Fragment {
     private Unbinder unbinder;
     private MyCartAdapter adapter;
     private CartViewModel cartViewModel;
-
+    String current_value;
+    int count = Integer.parseInt(Common.currentUser.getCount());
+    Double discount = 1.0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         cartViewModel = ViewModelProviders.of(this).get(CartViewModel.class);
         View root = inflater.inflate(R.layout.fragment_cart, container, false);
         cartViewModel.initCartDataSource(getContext());
+
+        if (count >= 5 && count < 10)
+            discount = 0.95;
+
+        else if(count > 10)
+            discount = 0.90;
+
         cartViewModel.getMutableLiveDataCartItems().observe(this, new Observer<List<CartItem>>() {
             @Override
             public void onChanged(List<CartItem> cartItems) {
@@ -212,7 +226,7 @@ public class CartFragment extends Fragment {
 
                     @Override
                     public void onSuccess(Double aDouble) {
-                        txt_total_price.setText(new StringBuilder("Total: ").append(Common.formatPrice(aDouble)));
+                        txt_total_price.setText(new StringBuilder("Total: ").append(Common.formatPrice(aDouble*discount)));
                     }
 
                     @Override
@@ -298,7 +312,7 @@ public class CartFragment extends Fragment {
                     @Override
                     public void onSuccess(Double price) {
                         txt_total_price.setText(new StringBuilder("Total: ")
-                                .append(Common.formatPrice(price)));
+                                .append(Common.formatPrice(price*discount)));
                     }
 
                     @Override
@@ -464,7 +478,7 @@ public class CartFragment extends Fragment {
 
                                     @Override
                                     public void onSuccess(Double totalPrice) {
-                                        double finalPrice = totalPrice; //discount will be used later
+                                        double finalPrice = totalPrice * discount; //discount will be used later
                                         Order order = new Order();
                                         order.setUserId(Common.getUid());
                                         order.setUserName(Common.currentUser.getName());
@@ -505,6 +519,7 @@ public class CartFragment extends Fragment {
     }
 
     private void writeOrderToFirebase(Order order) {
+
         FirebaseDatabase.getInstance()
                 .getReference(Common.ORDER_REF)
                 .child(Common.createOrderNumber())
@@ -526,6 +541,7 @@ public class CartFragment extends Fragment {
                                 @Override
                                 public void onSuccess(Integer integer) {
                                     //clean success
+                                    updateUserCount();
                                     Toast.makeText(getContext(), "Order placed successfully!", Toast.LENGTH_SHORT).show();
                                 }
 
@@ -536,6 +552,7 @@ public class CartFragment extends Fragment {
                             });
                 });
     }
+
 
     private String getAddressFromLatLng(double latitude, double longitude) {
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
@@ -580,6 +597,18 @@ public class CartFragment extends Fragment {
         locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(3000);
         locationRequest.setSmallestDisplacement(10f);
+    }
+
+    public void updateUserCount() {
+
+        current_value = Common.currentUser.getCount();
+        current_value = Integer.toString(Integer.parseInt(current_value) + 1);
+
+        FirebaseDatabase.getInstance().getReference("User")
+                .child(Common.getUid())
+                .child("count")
+                .setValue(current_value);
+
     }
 
 }
