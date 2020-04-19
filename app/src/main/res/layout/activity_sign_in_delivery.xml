@@ -125,11 +125,11 @@
         android:layout_marginBottom="15dp"
         >
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_sign_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#CDDC39"
+            android:background="#c75c41"
             android:text="@string/sign_in"
             android:textColor="@android:color/white"
             android:layout_marginRight="8dp"

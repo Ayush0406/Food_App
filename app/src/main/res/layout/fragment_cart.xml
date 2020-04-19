@@ -17,7 +17,7 @@
     <TextView
         android:id="@+id/txt_empty_cart"
         android:text="EMPTY CART"
-        android:fontFamily="@font/CooperHewitt-Bold"
+        android:fontFamily="@font/cooperhewitt_bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -44,7 +44,7 @@
             <TextView
                 android:id="@+id/txt_total_price"
                 android:text="Total: 0,0"
-                android:fontFamily="@font/CooperHewitt-Bold"
+                android:fontFamily="@font/cooperhewitt_bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -54,13 +54,13 @@
                 android:textSize="24sp"
                 />
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/btn_place_order"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#E91E63"
-                android:textColor="@android:color/white"
-                android:text="Place Order" />
+                android:background="#c75c41"
+                android:text="Place Order"
+                android:textColor="@android:color/white" />
 
 
         </LinearLayout>

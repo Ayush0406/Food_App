@@ -29,16 +29,16 @@
         </TextView>
 
         <TextView
+            android:id="@+id/txtSlogan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="65dp"
+            android:fontFamily="@font/pacifico"
             android:gravity="center"
-            android:textSize="40sp"
-            android:textColor="#c75c41"
-            android:fontFamily="@font/tahu"
             android:text="something human"
-            android:id="@+id/txtSlogan"
             android:textAlignment="center"
+            android:textColor="#c75c41"
+            android:textSize="25sp">
 
             >
         </TextView>
@@ -78,7 +78,7 @@
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:background="#c75c41"
+            android:background="#5588cd"
             android:text="@string/sign_in"
             android:textColor="@android:color/white">
             <!--            app:buttonColor="@color/btnSignActive"-->
