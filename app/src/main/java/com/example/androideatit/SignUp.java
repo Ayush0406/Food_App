@@ -101,17 +101,13 @@ public class SignUp extends AppCompatActivity {
                 table_user.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Log.d("signup", "onDataChange called");
                         //to check whether user already exists
                         mdialog.dismiss();
                         if(flag == false) {
-                            Log.d("signup", "flag = false called");
                             if (dataSnapshot.child(edtPhone.getText().toString()).exists()) {
-                                Log.d("signup", "flag = false exists");
                                 Toast.makeText(SignUp.this, "Account already registered! Please Sign in.", Toast.LENGTH_SHORT).show();
                                 finish();
                             } else {
-                                Log.d("signup", "flag = false not exists");
                                 User user = new User(edtName.getText().toString(), edtPassword.getText().toString(), edtAddress.getText().toString(), edtEmail.getText().toString(), "0", edtPhone.getText().toString(), edtPhone.getText().toString());
                                 table_user.child(edtPhone.getText().toString().replace(".", ",")).setValue(user);
                                 Toast.makeText(SignUp.this, "Sign Up successful. Please Sign In.", Toast.LENGTH_SHORT).show();
@@ -120,13 +116,10 @@ public class SignUp extends AppCompatActivity {
                         }
                         else
                         {
-                            Log.d("signup", "flag = true called");
                             if (dataSnapshot.child(edtEmail.getText().toString().replace(".", ",")).exists()) {
-                                Log.d("signup", "flag = true exists");
                                 Toast.makeText(SignUp.this, "Account already registered! Please Sign in.", Toast.LENGTH_SHORT).show();
                                 finish();
                             } else {
-                                Log.d("signup", "flag = true not exists");
                                 User user = new User(edtName.getText().toString(), edtPassword.getText().toString(), edtAddress.getText().toString(), edtEmail.getText().toString(), "0", edtPhone.getText().toString(), edtPhone.getText().toString());
                                 table_user.child(edtEmail.getText().toString().replace(".", ",")).setValue(user);
                                 Toast.makeText(SignUp.this, "Sign Up successful. Please Sign In.", Toast.LENGTH_SHORT).show();

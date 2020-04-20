@@ -3,20 +3,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/group1"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/menu_home" />
+    </group>
+
+    <group android:id="@+id/group2"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_menu"
             android:icon="@drawable/ic_restaurant_menu_black_24dp"
             android:title="@string/menu_menu" />
+    </group>
+
+    <group android:id="@+id/group3"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_cart"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
             android:title="@string/menu_cart" />
+    </group>
 
+    <group android:id="@+id/group4"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_view_orders"
             android:icon="@drawable/ic_view_headline_black_24dp"
