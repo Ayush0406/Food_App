@@ -49,7 +49,7 @@ public class SignInDelivery extends AppCompatActivity {
             public void onClick(View v) {
                 dialog.show();
 
-                table_user.addValueEventListener(new ValueEventListener() {
+                table_user.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         //Check if the user information exists in the database and fetch, if it does.

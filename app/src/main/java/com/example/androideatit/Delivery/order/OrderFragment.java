@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.telephony.SmsManager;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import com.example.androideatit.Adapter.MyOrderAdapter_d;
 import com.example.androideatit.Common.Common;
 import com.example.androideatit.Common.MySwipeHelper;
 import com.example.androideatit.R;
+import com.example.androideatit.SignIn;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
@@ -95,35 +97,57 @@ public class OrderFragment extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
 
+
+
         MySwipeHelper mySwipeHelper  = new MySwipeHelper(getContext(), recycler_order, width/6)
         {
             @Override
             public void instantiateMyButton(RecyclerView.ViewHolder viewHolder, List<MyButton> buf) {
                 buf.add(new MyButton(getContext(), "Accept", 30, 0, Color.parseColor("#9b0000"), pos->{
-                    OrderModel orderModel = adapter.getItemAtPosition(pos);
-                    if(orderModel.getOrderStatus() == 1)
-                    {
-                        Toast.makeText(getContext(), "Order already accepted.", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        Map<String, Object> updateData = new HashMap<>();
-                        updateData.put("orderStatus", 1);
-                        FirebaseDatabase.getInstance().getReference("Orders").child(orderModel.getKey())
-                                .updateChildren(updateData)
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                adapter.updateItemStatusAtPosition(pos, 1);
-                                adapter.notifyItemChanged(pos);
-                                Toast.makeText(getContext(), "Order Update Successful.", Toast.LENGTH_SHORT).show();
+                    Dexter.withContext(getContext()).withPermission(Manifest.permission.SEND_SMS).withListener(new PermissionListener() {
+                        @Override
+                        public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                            OrderModel orderModel = adapter.getItemAtPosition(pos);
+                            if(orderModel.getOrderStatus() == 1)
+                            {
+                                Toast.makeText(getContext(), "Order already accepted.", Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    }
+                            else {
+                                Map<String, Object> updateData = new HashMap<>();
+                                updateData.put("orderStatus", 1);
+                                FirebaseDatabase.getInstance().getReference("Orders").child(orderModel.getKey())
+                                        .updateChildren(updateData)
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        adapter.updateItemStatusAtPosition(pos, 1);
+                                        adapter.notifyItemChanged(pos);
+                                        String phoneNumber = orderModel.getUserPhone();
+                                        String message = new String("Dear " + orderModel.getUserName() + ",\nYour order has been accepted for delivery");
+                                        SmsManager smsManager = SmsManager.getDefault();
+                                        smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+                                        Toast.makeText(getContext(), "Order Update Successful.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                            Toast.makeText(getContext(), "Please accept the permission to continue.", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+
+                        }
+                    }).check();
+
                 }));
 
                 buf.add(new MyButton(getContext(), "Call", 30, 0, Color.parseColor("#560027"), pos->{

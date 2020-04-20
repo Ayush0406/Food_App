@@ -109,7 +109,7 @@ public class SignIn extends AppCompatActivity {
                 mdialog.setMessage("Loading, Please wait.....");
                 mdialog.show();
 
-                table_user.addValueEventListener(new ValueEventListener() {
+                table_user.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         //Check if the user information exists in the database and fetch, if it does.
@@ -242,7 +242,7 @@ public class SignIn extends AppCompatActivity {
         if(user != null)
         {
             edtPhone.setText(user.getEmail());
-            table_user.addValueEventListener(new ValueEventListener() {
+            table_user.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     //Check if the user information exists in the database and fetch, if it does.
