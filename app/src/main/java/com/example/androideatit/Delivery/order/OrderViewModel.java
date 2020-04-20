@@ -1,5 +1,9 @@
 package com.example.androideatit.Delivery.order;
 
+import android.location.Geocoder;
+import android.location.Location;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -66,6 +70,15 @@ public class OrderViewModel extends ViewModel implements IOrderCallbackListener 
                 {
                     OrderModel orderModel = itemSnapShot.getValue(OrderModel.class);
                     orderModel.setKey(itemSnapShot.getKey());
+                    Location locationA = new Location("");
+                    locationA.setLatitude(orderModel.getLat());
+                    locationA.setLongitude(orderModel.getLng());
+                    Location locationB = new Location("");
+                    locationB.setLatitude(Double.parseDouble(Common.currentDelivery.getLat()));
+                    locationB.setLongitude(Double.parseDouble(Common.currentDelivery.getLng()));
+
+                    float distance = locationA.distanceTo(locationB);
+                    Log.d("Dist Order View Model", String.valueOf(distance));
                     tempList.add(orderModel);
                 }
                 listener.onOrderLoadSuccess(tempList);
