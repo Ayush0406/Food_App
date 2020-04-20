@@ -71,18 +71,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-
-        <RadioButton
-            android:id="@+id/rdi_other_address"
-            android:checked="false"
-            android:text="Other Address"
-            android:fontFamily="@font/cooperhewitt_bold"
-            android:textSize="18sp"
-            android:textStyle="italic"
-            android:textColor="@color/dialog_text_color"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
         <RadioButton
             android:id="@+id/rdi_ship_this_address"
             android:checked="false"
@@ -126,4 +114,15 @@
 
 </LinearLayout>
 
-
+<!--
+<RadioButton
+            android:id="@+id/rdi_other_address"
+            android:checked="false"
+            android:text="Other Address"
+            android:fontFamily="@font/cooperhewitt_bold"
+            android:textSize="18sp"
+            android:textStyle="italic"
+            android:textColor="@color/dialog_text_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+-->

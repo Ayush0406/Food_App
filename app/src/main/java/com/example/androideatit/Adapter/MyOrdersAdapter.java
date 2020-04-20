@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.androideatit.Common.Common;
+import com.example.androideatit.Database.CartItem;
 import com.example.androideatit.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import Model.Order;
 import butterknife.BindView;
@@ -56,8 +58,16 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
         .append(simpleDateFormat.format(date)));
         holder.txt_order_number.setText(new StringBuilder("Order Number: ")
         .append(orderList.get(position).getOrderNumber()));
-        holder.txt_order_comment.setText(new StringBuilder("Comment: ").append(orderList.get(position).getComment()));
+        holder.txt_order_price.setText(new StringBuilder("Price (excluding delivery): Rs. ").append(orderList.get(position).getFinalPayment()));
         holder.txt_order_status.setText(new StringBuilder("Status: ").append(Common.convertStatusToText(orderList.get(position).getOrderStatus())));
+        List<CartItem> cartItemList = orderList.get(position).getCartItemList();
+        StringBuilder orderItems = new StringBuilder("Order Items: ");
+        for(CartItem item : cartItemList)
+        {
+            orderItems.append(item.getFoodName()).append(", ");
+        }
+        orderItems.delete(orderItems.length()-2, orderItems.length());
+        holder.txt_order_items.setText(orderItems);
     }
 
     @Override
@@ -69,12 +79,14 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
 
         @BindView(R.id.txt_order_status)
         TextView txt_order_status;
-        @BindView(R.id.txt_order_comment)
-        TextView txt_order_comment;
+        @BindView(R.id.txt_order_price)
+        TextView txt_order_price;
         @BindView(R.id.txt_order_date)
         TextView txt_order_date;
         @BindView(R.id.txt_order_number)
         TextView txt_order_number;
+        @BindView(R.id.txt_order_items)
+        TextView txt_order_items;
         @BindView(R.id.img_order)
         ImageView img_order;
 
