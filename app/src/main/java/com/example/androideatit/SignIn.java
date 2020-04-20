@@ -163,8 +163,8 @@ public class SignIn extends AppCompatActivity {
         btnDeliverySignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent home_delivery = new Intent(SignIn.this, HomeDelivery.class);
-                startActivity(home_delivery);
+                Intent signInDelivery = new Intent(SignIn.this, SignInDelivery.class);
+                startActivity(signInDelivery);
             }
         });
 
