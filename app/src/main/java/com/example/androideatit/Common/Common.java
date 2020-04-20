@@ -35,6 +35,7 @@ import java.util.Random;
 
 import Model.AddonModel;
 import Model.CategoryModel;
+import Model.DeliveryPerson;
 import Model.FoodModel;
 import Model.SizeModel;
 import Model.TokenModel;
@@ -49,6 +50,7 @@ public class Common {
     public static User currentUser;
     public static FoodModel selectedFood;
     public static String Uid;
+    public static DeliveryPerson currentDelivery;
 
 
     public static void setUid(String uid) {
@@ -157,11 +159,11 @@ public class Common {
         switch (orderStatus)
         {
             case 0:
-                return "Placed";
+                return "Pending";
             case 1:
-                return "Shipping";
+                return "Accepted";
             case 2:
-                return "Shipped";
+                return "Fulfilled";
             case -1:
                 return "Cancelled";
             default:

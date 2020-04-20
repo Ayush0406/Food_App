@@ -66,6 +66,10 @@ public class MyOrderAdapter_d extends RecyclerView.Adapter<MyOrderAdapter_d.MyVi
         orderModelList.remove(pos);
     }
 
+    public void updateItemStatusAtPosition(int pos, int i) {
+        orderModelList.get(pos).setOrderStatus(i);
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.img_food_image_delivery_d)
         ImageView img_food_image;
