@@ -79,22 +79,21 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
     ImageView img_food;
     @BindView(R.id.btnCart)
     CounterFab btnCart;
-    @BindView(R.id.btn_rating)
-    FloatingActionButton btn_rating;
     @BindView(R.id.food_name)
     TextView food_name;
     @BindView(R.id.food_description)
     TextView food_description;
     @BindView(R.id.food_price)
     TextView food_price;
+    @BindView(R.id.food_price_up)
+    TextView food_price_up;
     @BindView(R.id.number_button)
     ElegantNumberButton numberButton;
 //    @BindView(R.id.ratingBar)
 //    RatingBar ratingBar;
-    @BindView(R.id.btnShowComment)
-    Button btnShowComment;
-    @BindView(R.id.food_price_total)
-    TextView food_price_total;
+//    @BindView(R.id.btnShowComment)
+//    Button btnShowComment;
+
     @BindView(R.id.rdi_group_size)
     RadioGroup rdi_group_size;
     @BindView(R.id.img_add_addon)
@@ -310,14 +309,14 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
         food_name.setText(new StringBuilder(foodModel.getName()));
         food_description.setText(new StringBuilder(foodModel.getDescription()));
         food_price.setText(new StringBuilder(foodModel.getPrice().toString()));
-        food_price_total.setText(new StringBuilder(foodModel.getPrice().toString()));
+        food_price_up.setText(new StringBuilder(foodModel.getPrice().toString()));
 
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(Common.selectedFood.getName());
 
         numberButton.setOnClickListener(new ElegantNumberButton.OnClickListener() {
-            @Override
+            @Override // update price
             public void onClick(View view) {
-                calculateTotalPrice(); // update price
+                calculateTotalPrice();
             }
         });
 
@@ -369,26 +368,30 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
                 totalPrice += Double.parseDouble(Common.selectedFood.getUserSelectedSize().getPrice().toString());
 
             int num = Integer.parseInt(numberButton.getNumber());
+
             displayPrice = totalPrice * (num);
             displayPrice = Math.round(displayPrice * 100.0/100.0);
 
-            food_price.setText(new StringBuilder("").append(Common.formatPrice(displayPrice/num)).toString());
+            food_price_up.setText(new StringBuilder("").append(Common.formatPrice(displayPrice/num)).toString());
 
             int count = Integer.parseInt(Common.currentUser.getCount());
 
             if (count >= 5 && count < 10) {
                 discount = 0.95;
                 displayPrice = discount * displayPrice;
-                food_price_total.setText(new StringBuilder("")
-                        .append(Common.formatPrice(displayPrice)
+                food_price_up.setText(new StringBuilder("")
+                        .append(Common.formatPrice(displayPrice/num)
                                 +"           - 5% Discount Applied").toString());
             }
                 else if (count >= 10) {
                 discount = 0.9;
                 displayPrice = discount * displayPrice;
-                food_price_total.setText(new StringBuilder("")
-                        .append(Common.formatPrice(displayPrice)
+                food_price_up.setText(new StringBuilder("")
+                        .append(Common.formatPrice(displayPrice/num)
                                 +"           - 10% Discount Applied").toString());
+            }
+                else{
+                food_price.setText(new StringBuilder("").append(Common.formatPrice(displayPrice)).toString());
             }
 
     }
