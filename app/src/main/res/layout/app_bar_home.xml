@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:tint="@android:color/white"
+        android:tint="#c75c41"
         app:srcCompat="@drawable/ic_shopping_cart_black_24dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
