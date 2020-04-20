@@ -64,8 +64,17 @@ public class MyCartAdapter extends RecyclerView.Adapter<MyCartAdapter.MyViewHold
         holder.txt_food_name.setText(new StringBuilder(cartItemList.get(position).getFoodName()));
         holder.txt_food_price.setText(new StringBuilder("Total: ")
                 .append(Common.formatPrice(temp)));
-        holder.txt_final_price.setText(new StringBuilder("After Discount: ")
-                .append(Common.formatPrice(temp * discount)));
+        if (discount < 1.0)
+            {
+                holder.txt_final_price.setText(new StringBuilder("After Discount: ")
+                    .append(Common.formatPrice(temp * discount)));
+            }
+
+        else
+        {
+            holder.txt_final_price.setText(new StringBuilder(""));
+        }
+
         holder.numberButton.setNumber(String.valueOf(cartItemList.get(position).getFoodQuantity()));
 
         //event

@@ -46,7 +46,7 @@
                 android:text="100.0"
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="14sp"
-                android:textStyle="italic" />
+                android:textStyle="normal" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -55,7 +55,7 @@
 
                 <TextView
                     android:id="@+id/txt_final_price"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
@@ -64,9 +64,7 @@
                     android:text="100.0"
                     android:textColor="#0dbb00"
                     android:textSize="14sp"
-                    android:textStyle="italic" />
-
-
+                    android:textStyle="normal" />
 
 
                     />

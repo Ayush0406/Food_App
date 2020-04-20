@@ -140,6 +140,7 @@
                         app:backGroundColor="#c75c41"
                         app:finalNumber="20"
                         app:initialNumber="1"
+                        app:textColor="@android:color/white"
                         app:textSize="8sp" />
                     
                 </LinearLayout>
