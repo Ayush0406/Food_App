@@ -174,62 +174,107 @@ public class OrderFragment extends Fragment {
                 }));
 
                 buf.add(new MyButton(getContext(), "Reject", 30, 0, Color.parseColor("#12005e"), pos -> {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle("Delete Order")
-                            .setMessage("Do you really want to reject this order?")
-                            .setNegativeButton("CANCEL", (dialog, which) -> dialog.dismiss()).setPositiveButton("REJECT", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    OrderModel orderModel = adapter.getItemAtPosition(pos);
-                                    FirebaseDatabase.getInstance().getReference("Orders").child(orderModel.getKey()).removeValue()
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-                                                    Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                                }
-                                            }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    Dexter.withContext(getContext()).withPermission(Manifest.permission.SEND_SMS).withListener(new PermissionListener() {
+                        @Override
+                        public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle("Delete Order")
+                                    .setMessage("Do you really want to reject this order?")
+                                    .setNegativeButton("CANCEL", (dialog, which) -> dialog.dismiss()).setPositiveButton("REJECT", new DialogInterface.OnClickListener() {
                                         @Override
-                                        public void onSuccess(Void aVoid) {
-                                            adapter.removeItem(pos);
-                                            adapter.notifyItemRemoved(pos);
-                                            Toast.makeText(getContext(), "Order has been successfully cancelled!", Toast.LENGTH_SHORT).show();
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            OrderModel orderModel = adapter.getItemAtPosition(pos);
+                                            FirebaseDatabase.getInstance().getReference("Orders").child(orderModel.getKey()).removeValue()
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Toast.makeText(getContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    adapter.removeItem(pos);
+                                                    adapter.notifyItemRemoved(pos);
+                                                    String phoneNumber = orderModel.getUserPhone();
+                                                    String message = new String("Dear " + orderModel.getUserName() + ",\nSorry, Your order has been cancelled.");
+                                                    SmsManager smsManager = SmsManager.getDefault();
+                                                    smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+                                                    Toast.makeText(getContext(), "Order has been successfully cancelled!", Toast.LENGTH_SHORT).show();
+
+                                                }
+                                            });
                                         }
                                     });
-                                }
-                            });
 
 
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                    dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.GRAY);
-                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.RED);
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                            dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.GRAY);
+                            dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(Color.RED);
+                        }
+
+                        @Override
+                        public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                            Toast.makeText(getContext(), "Please accept the permission to continue.", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+
+                        }
+                    }).check();
+
+
                 }));
 
                 buf.add(new MyButton(getContext(), "Fulfilled", 30, 0, Color.parseColor("#336699"), pos->{
 //                    showEditDialog(adapter.getItemAtPosition(pos), pos);
-
-                    OrderModel orderModel = adapter.getItemAtPosition(pos);
-                    if(orderModel.getOrderStatus() == 2)
-                    {
-                        Toast.makeText(getContext(), "Order already completed.", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    {
-                        FirebaseDatabase.getInstance().getReference("Orders").child(orderModel.getKey())
-                                .removeValue()
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                adapter.removeItem(pos);
-                                adapter.notifyItemRemoved(pos);
-                                Toast.makeText(getContext(), "Order Status Successfully Updated.", Toast.LENGTH_SHORT).show();
+                    Dexter.withContext(getContext()).withPermission(Manifest.permission.SEND_SMS).withListener(new PermissionListener() {
+                        @Override
+                        public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                            OrderModel orderModel = adapter.getItemAtPosition(pos);
+                            if(orderModel.getOrderStatus() == 2)
+                            {
+                                Toast.makeText(getContext(), "Order already completed.", Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    }
+                            else
+                            {
+                                FirebaseDatabase.getInstance().getReference("Orders").child(orderModel.getKey())
+                                        .removeValue()
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(getContext(), ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        adapter.removeItem(pos);
+                                        adapter.notifyItemRemoved(pos);
+
+                                        String phoneNumber = orderModel.getUserPhone();
+                                        String message = new String("Dear " + orderModel.getUserName() + ",\nYour order has been fulfilled.");
+                                        SmsManager smsManager = SmsManager.getDefault();
+                                        smsManager.sendTextMessage(phoneNumber, null, message, null, null);
+
+                                        Toast.makeText(getContext(), "Order Status Successfully Updated.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                            Toast.makeText(getContext(), "Please accept the permission to continue.", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+
+                        }
+                    }).check();
+
+
+
                 }));
             }
         };
