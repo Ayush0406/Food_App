@@ -89,19 +89,18 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    
+
                     <TextView
                         android:id="@+id/food_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:fontFamily="@font/cooperhewitt_bold"
                         android:padding="12dp"
                         android:text="Food Name"
-                        android:fontFamily="@font/cooperhewitt_bold"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="#002b64"
                         android:textSize="20sp"
-                        android:textStyle="bold"
-                        >
+                        android:textStyle="bold">
 
                     </TextView>
 
@@ -117,18 +116,17 @@
                             android:layout_height="wrap_content"
                             app:srcCompat="@drawable/ic_attach_money_black_24dp"
                             />
-                        
+
                         <TextView
                             android:id="@+id/food_price_total"
-                            android:layout_weight="9"
-                            android:textColor="@color/colorPrimary"
-                            android:text="1,000"
-                            android:fontFamily="@font/cooperhewitt_bold"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="9"
+                            android:fontFamily="@font/cooperhewitt_bold"
+                            android:text="1,000"
+                            android:textColor="#002b64"
                             android:textSize="18sp"
-                            android:textStyle="bold"
-                            />
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
@@ -167,15 +165,14 @@
 
                 <TextView
                     android:id="@+id/food_price"
-                    android:layout_weight="9"
-                    android:textColor="@color/colorPrimary"
-                    android:text="1,000"
-                    android:fontFamily="@font/cooperhewitt_bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="9"
+                    android:fontFamily="@font/cooperhewitt_bold"
+                    android:text="1,000"
+                    android:textColor="#002b64"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    />
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
@@ -259,13 +256,13 @@
 
                     <ImageView
                         android:id="@+id/img_add_addon"
-                        android:layout_width = "30dp"
+                        android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="4dp"
-                        android:layout_marginTop="4dp"
-                        app:srcCompat="@drawable/ic_add_box_black_24dp"
-                        android:tint="@color/colorAccent" />
+                        android:layout_marginTop="0dp"
+                        android:tint="#002b64"
+                        app:srcCompat="@drawable/ic_add_box_black_24dp" />
 
                 </LinearLayout>
 

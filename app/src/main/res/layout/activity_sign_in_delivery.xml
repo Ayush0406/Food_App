@@ -129,13 +129,12 @@
             android:id="@+id/btn_sign_in"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#c75c41"
-            android:text="@string/sign_in"
-            android:textColor="@android:color/white"
-            android:layout_marginRight="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_margin="8dp"
-            />
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="#5588cd"
+            android:text="@string/sign_in"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 
