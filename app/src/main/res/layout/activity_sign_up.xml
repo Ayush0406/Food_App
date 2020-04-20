@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/pancakes_nutella_fruits_145225_2160x3840"
+    android:background="@drawable/bgblur"
     tools:context=".SignUp">
 
     <LinearLayout
@@ -21,8 +21,9 @@
             android:hint="Phone Number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@android:color/white"
-            android:textColor="@android:color/white"
+            android:text=""
+            android:textColorHint="#fccbbf"
+            android:textColor="#fccbbf"
             android:textSize="28sp"
             android:inputType="phone"
             app:met_baseColor="@android:color/white"
@@ -40,9 +41,9 @@
             android:textColor="@android:color/white"
             android:textSize="28sp"
             android:inputType="text"
-            app:met_baseColor="@android:color/white"
+            app:met_baseColor="#fccbbf"
             app:met_floatingLabel="highlight"
-            app:met_primaryColor="@android:color/white"
+            app:met_primaryColor="#fccbbf"
             app:met_singleLineEllipsis="true"
             />
 
@@ -51,13 +52,14 @@
             android:hint="Name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@android:color/white"
-            android:textColor="@android:color/white"
+            android:text=""
+            android:textColorHint="#fccbbf"
+            android:textColor="#fccbbf"
             android:textSize="28sp"
             android:inputType="text"
-            app:met_baseColor="@android:color/white"
+            app:met_baseColor="#fccbbf"
             app:met_floatingLabel="highlight"
-            app:met_primaryColor="@android:color/white"
+            app:met_primaryColor="#fccbbf"
             app:met_singleLineEllipsis="true"
             />
 
@@ -66,13 +68,15 @@
             android:hint="Password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="@android:color/white"
-            android:textColor="@android:color/white"
+            android:text=""
+            android:textColorHint="#fccbbf"
+            android:textColor="#fccbbf"
             android:textSize="28sp"
             android:inputType="textPassword"
-            app:met_baseColor="@android:color/white"
+            app:met_baseColor="#fccbbf"
             app:met_floatingLabel="highlight"
-            app:met_primaryColor="@android:color/white"
+            app:met_maxCharacters="11"
+            app:met_primaryColor="#fccbbf"
             app:met_singleLineEllipsis="true"
             />
 
@@ -110,19 +114,20 @@
         android:layout_margin="8dp"
         />
 
-    <Button
-        android:id="@+id/btnSignUp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_margin="8dp"
-        android:layout_alignParentBottom="true"
-        android:layout_weight="1"
-        android:background="#2196F3"
-        android:text="@string/sign_up"
-        android:textColor="@android:color/white">
-    </Button>
+        <android.widget.Button
+            android:id="@+id/btnSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:background="#c75c41"
+            android:text="@string/sign_up"
+            android:textColor="#fccbbf">
+
+        </android.widget.Button>
 
     </LinearLayout>
 

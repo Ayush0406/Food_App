@@ -21,14 +21,15 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             >
-            
+
             <TextView
-                android:fontFamily="@font/brandon_medium"
-                android:textSize="24sp"
-                android:text="@string/popular_categories"
-                android:textStyle="bold"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/cooperhewitt_bold"
+                android:text="@string/popular_categories"
+                android:textColor="#002b64 "
+                android:textSize="24sp"
+                android:textStyle="bold" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_popular"
                 android:layout_width="match_parent"
@@ -42,15 +43,17 @@
             android:layout_height="0dp"
             android:layout_weight="3"
             >
+
             <TextView
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="8dp"
-                android:fontFamily="@font/brandon_medium"
-                android:text="@string/best_deals"
-                android:textStyle="bold"
-                android:textSize="24sp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/cooperhewitt_bold"
+                android:text="@string/best_deals"
+                android:textColor="#002b64 "
+                android:textSize="24sp"
+                android:textStyle="bold">
 
             </TextView>
             <com.asksira.loopingviewpager.LoopingViewPager

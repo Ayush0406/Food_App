@@ -31,8 +31,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:fontFamily="@font/brandon_medium"
+                android:fontFamily="@font/cooperhewitt_bold"
                 android:text="Cart"
+                android:textColor="#002b64 "
                 android:textSize="14sp" />
 
             <TextView
@@ -42,11 +43,11 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:fontFamily="@font/brandon_medium"
+                android:fontFamily="@font/cooperhewitt_bold"
                 android:text="100.0"
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="14sp"
-                android:textStyle="italic" />
+                android:textStyle="normal" />
 
             <LinearLayout
                 android:orientation="vertical"
@@ -55,19 +56,16 @@
 
                 <TextView
                     android:id="@+id/txt_final_price"
-                    android:text="100.0"
-                    android:fontFamily="@font/brandon_medium"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/cooperhewitt_bold"
+                    android:text="100.0"
+                    android:textColor="#0dbb00"
                     android:textSize="14sp"
-                    android:textStyle="italic"
-                    android:textColor="@color/colorAccent"
-                    />
-
-
+                    android:textStyle="normal" />
 
 
                     />
@@ -75,14 +73,14 @@
         </LinearLayout>
 
             <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-                android:layout_gravity="right"
                 android:id="@+id/number_button"
                 android:layout_width="150dp"
                 android:layout_height="40dp"
-                android:layout_marginBottom="18dp"
+                android:layout_gravity="right"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                app:backGroundColor="@color/colorAccent"
+                android:layout_marginBottom="18dp"
+                app:backGroundColor="#c75c41"
                 app:finalNumber="20"
                 app:initialNumber="1"
                 app:textColor="@android:color/white"

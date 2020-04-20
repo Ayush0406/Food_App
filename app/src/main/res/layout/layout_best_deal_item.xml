@@ -19,7 +19,7 @@
         android:id="@+id/txt_best_deal"
         android:text="@string/popular_categories"
         android:gravity="center_horizontal|center_vertical"
-        android:fontFamily="@font/brandon_medium"
+        android:fontFamily="@font/cooperhewitt_bold"
         android:textColor="@android:color/white"
         android:textSize="22sp"
         android:layout_gravity="center_vertical"
