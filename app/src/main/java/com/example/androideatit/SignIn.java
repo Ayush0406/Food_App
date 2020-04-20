@@ -109,7 +109,7 @@ public class SignIn extends AppCompatActivity {
                 mdialog.setMessage("Loading, Please wait.....");
                 mdialog.show();
 
-                table_user.addValueEventListener(new ValueEventListener() {
+                table_user.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         //Check if the user information exists in the database and fetch, if it does.
@@ -163,8 +163,8 @@ public class SignIn extends AppCompatActivity {
         btnDeliverySignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent home_delivery = new Intent(SignIn.this, HomeDelivery.class);
-                startActivity(home_delivery);
+                Intent signInDelivery = new Intent(SignIn.this, SignInDelivery.class);
+                startActivity(signInDelivery);
             }
         });
 
@@ -242,7 +242,7 @@ public class SignIn extends AppCompatActivity {
         if(user != null)
         {
             edtPhone.setText(user.getEmail());
-            table_user.addValueEventListener(new ValueEventListener() {
+            table_user.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     //Check if the user information exists in the database and fetch, if it does.

@@ -37,6 +37,7 @@ import com.example.androideatit.Database.CartItem;
 import com.example.androideatit.Database.LocalCartDataSource;
 import com.example.androideatit.EventBus.CounterCartEvent;
 import com.example.androideatit.EventBus.FoodItemClick;
+import com.example.androideatit.EventBus.MenuItemBack;
 import com.example.androideatit.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.chip.Chip;
@@ -436,6 +437,11 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
         super.onStop();
     }
 
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().postSticky(new MenuItemBack());
+        super.onDestroy();
+    }
 
 }
 

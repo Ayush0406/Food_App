@@ -4,27 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/bgblur"
     tools:context=".SignUp">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/edtPhone"
-            android:hint="Phone Number/Email"
+            android:hint="Phone Number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=""
             android:textColorHint="#fccbbf"
             android:textColor="#fccbbf"
-            android:textSize="34sp"
+            android:textSize="28sp"
+            android:inputType="phone"
+            app:met_baseColor="@android:color/white"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@android:color/white"
+            app:met_singleLineEllipsis="true"
+            />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/edtEmail"
+            android:hint="Email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"
+            android:textSize="28sp"
             android:inputType="text"
             app:met_baseColor="#fccbbf"
             app:met_floatingLabel="highlight"
@@ -40,7 +55,7 @@
             android:text=""
             android:textColorHint="#fccbbf"
             android:textColor="#fccbbf"
-            android:textSize="34sp"
+            android:textSize="28sp"
             android:inputType="text"
             app:met_baseColor="#fccbbf"
             app:met_floatingLabel="highlight"
@@ -53,15 +68,30 @@
             android:hint="Password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="1234"
+            android:text=""
             android:textColorHint="#fccbbf"
             android:textColor="#fccbbf"
-            android:textSize="34sp"
+            android:textSize="28sp"
             android:inputType="textPassword"
             app:met_baseColor="#fccbbf"
             app:met_floatingLabel="highlight"
             app:met_maxCharacters="11"
             app:met_primaryColor="#fccbbf"
+            app:met_singleLineEllipsis="true"
+            />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/edtAddress"
+            android:hint="Address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"
+            android:textSize="28sp"
+            android:inputType="text"
+            app:met_baseColor="@android:color/white"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@android:color/white"
             app:met_singleLineEllipsis="true"
             />
 
@@ -95,7 +125,9 @@
             android:layout_weight="1"
             android:background="#c75c41"
             android:text="@string/sign_up"
-            android:textColor="#fccbbf"></android.widget.Button>
+            android:textColor="#fccbbf">
+
+        </android.widget.Button>
 
     </LinearLayout>
 

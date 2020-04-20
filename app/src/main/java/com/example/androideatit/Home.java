@@ -19,6 +19,7 @@ import com.example.androideatit.EventBus.CounterCartEvent;
 import com.example.androideatit.EventBus.FoodItemClick;
 import com.example.androideatit.EventBus.HideFABCart;
 import com.example.androideatit.EventBus.PopularCategoryClick;
+import com.example.androideatit.EventBus.MenuItemBack;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -59,6 +60,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     private CartDataSource cartDataSource;
 
     android.app.AlertDialog dialog;
+    int menuClickId = 1;
 
     @BindView(R.id.fab)
     CounterFab fab;
@@ -130,19 +132,25 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         switch (menuItem.getItemId())
         {
             case R.id.nav_home:
-                navController.navigate(R.id.nav_home);
+                if(menuItem.getItemId() != menuClickId)
+                    navController.navigate(R.id.nav_home);
                 break;
             case R.id.nav_menu:
-                navController.navigate(R.id.nav_menu);
+                if(menuItem.getItemId() != menuClickId)
+                    navController.navigate(R.id.nav_menu);
                 break;
             case R.id.nav_cart:
-                navController.navigate(R.id.nav_cart);
+                if(menuItem.getItemId() != menuClickId)
+                    navController.navigate(R.id.nav_cart);
                 break;
             case R.id.nav_view_orders:
-                navController.navigate(R.id.nav_view_orders);
+                if(menuItem.getItemId() != menuClickId)
+                    navController.navigate(R.id.nav_view_orders);
                 break;
         }
-        return false;
+        menuClickId = menuItem.getItemId();
+        //WAS FALSE CHANGED TO TRUE POSSIBLE ERROR
+        return true;
     }
 
     //EventBus declaration for mainActivity to receive information-
@@ -375,6 +383,21 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                     });
             //Toast.makeText(this, "Clicked on " + event.getCategoryModel().getName(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void countCartAgain(CounterCartEvent event)
+    {
+        if(event.isSuccess())
+            countCartItem();
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onMenuItemBack(MenuItemBack event)
+    {
+        menuClickId = -1;
+        if(getSupportFragmentManager().getBackStackEntryCount() > 0)
+            getSupportFragmentManager().popBackStack();
     }
 
 }
