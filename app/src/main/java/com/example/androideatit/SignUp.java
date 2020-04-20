@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -38,7 +39,7 @@ import dmax.dialog.SpotsDialog;
 
 public class SignUp extends AppCompatActivity {
 
-    MaterialEditText edtPhone, edtName, edtPassword;
+    MaterialEditText edtPhone, edtName, edtPassword, edtEmail, edtAddress;
     Button btnSignUp;
 
     GoogleSignInClient mGoogleSignInClient;
@@ -47,6 +48,7 @@ public class SignUp extends AppCompatActivity {
     int RC_SIGN_IN = 1;
 
     AlertDialog dialog;
+    boolean flag = false;
 
 
     @Override
@@ -57,6 +59,8 @@ public class SignUp extends AppCompatActivity {
         edtName = (MaterialEditText)findViewById(R.id.edtName);
         edtPassword = (MaterialEditText)findViewById(R.id.edtPassword);
         edtPhone = (MaterialEditText)findViewById(R.id.edtPhone);
+        edtEmail = (MaterialEditText)findViewById(R.id.edtEmail);
+        edtAddress = (MaterialEditText)findViewById(R.id.edtAddress);
 
         btnSignUp = (Button)findViewById(R.id.btnSignUp);
 
@@ -98,16 +102,28 @@ public class SignUp extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         //to check whether user already exists
                         mdialog.dismiss();
-                        if(dataSnapshot.child(edtPhone.getText().toString().replace(".", ",")).exists())
-                        {
-                            Toast.makeText(SignUp.this, "Account already registered! Please Sign in.", Toast.LENGTH_SHORT).show();
-                            finish();
+                        if(flag == false) {
+                            if (dataSnapshot.child(edtPhone.getText().toString().replace(".", ",")).exists()) {
+                                Toast.makeText(SignUp.this, "Account already registered! Please Sign in.", Toast.LENGTH_SHORT).show();
+                                finish();
+                            } else {
+                                User user = new User(edtName.getText().toString(), edtPassword.getText().toString(), edtAddress.getText().toString(), edtEmail.getText().toString(), "0", edtPhone.getText().toString(), edtPhone.getText().toString());
+                                table_user.child(edtPhone.getText().toString().replace(".", ",")).setValue(user);
+                                Toast.makeText(SignUp.this, "Sign Up successful. Please Sign In.", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
                         }
-                        else {
-                            User user = new User(edtName.getText().toString(), edtPassword.getText().toString(), " ", "testmail.com", "0", edtPhone.getText().toString(), edtPhone.getText().toString());
-                            table_user.child(edtPhone.getText().toString().replace(".", ",")).setValue(user);
-                            Toast.makeText(SignUp.this, "Sign Up successful. Please Sign In.", Toast.LENGTH_SHORT).show();
-                            finish();
+                        else
+                        {
+                            if (dataSnapshot.child(edtEmail.getText().toString().replace(".", ",")).exists()) {
+                                Toast.makeText(SignUp.this, "Account already registered! Please Sign in.", Toast.LENGTH_SHORT).show();
+                                finish();
+                            } else {
+                                User user = new User(edtName.getText().toString(), edtPassword.getText().toString(), edtAddress.getText().toString(), edtEmail.getText().toString(), "0", edtPhone.getText().toString(), edtPhone.getText().toString());
+                                table_user.child(edtEmail.getText().toString().replace(".", ",")).setValue(user);
+                                Toast.makeText(SignUp.this, "Sign Up successful. Please Sign In.", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }
                         }
                     }
 
@@ -184,8 +200,25 @@ public class SignUp extends AppCompatActivity {
         if(user != null)
         {
             signInButton.setVisibility(View.INVISIBLE);
-            edtPhone.setText(user.getEmail());
+            edtEmail.setText(user.getEmail());
             edtName.setText(user.getDisplayName());
+            edtPhone.setText(user.getPhoneNumber());
+            if(edtEmail.getText().length()>0)
+            {
+                edtEmail.setEnabled(false);
+                edtEmail.setPrimaryColor(Color.WHITE);
+            }
+
+            if(edtName.getText().length()>0)
+            {
+                edtName.setEnabled(false);
+            }
+
+            if(edtPhone.getText().length()>0)
+            {
+                edtPhone.setEnabled(false);
+            }
+            flag = true;
             Toast.makeText(this, "Please enter your credentials.", Toast.LENGTH_SHORT).show();
             FirebaseAuth.getInstance().signOut();
             dialog.dismiss();
