@@ -74,7 +74,7 @@
 
         <RadioButton
             android:id="@+id/rdi_other_address"
-            android:checked="true"
+            android:checked="false"
             android:text="Other Address"
             android:fontFamily="@font/brandon_medium"
             android:textSize="18sp"
@@ -85,7 +85,7 @@
 
         <RadioButton
             android:id="@+id/rdi_ship_this_address"
-            android:checked="true"
+            android:checked="false"
             android:text="Ship to current address"
             android:fontFamily="@font/brandon_medium"
             android:textSize="18sp"

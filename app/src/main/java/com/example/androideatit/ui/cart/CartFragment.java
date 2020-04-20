@@ -591,11 +591,12 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         String result="";
         try{
-            List<Address> addressList = geocoder.getFromLocation(latitude,longitude, 1);
+            List<Address> addressList = geocoder.getFromLocation(latitude,longitude, 4);
             if(addressList != null && addressList.size() > 0)
             {
                 Address address = addressList.get(0);
                 StringBuilder sb = new StringBuilder(address.getAddressLine(0));
+                Log.d(new StringBuilder(addressList.get(1).getAddressLine((0))));
                 result = sb.toString();
             }
             else
