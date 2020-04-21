@@ -42,6 +42,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.HashMap;
@@ -126,8 +127,18 @@ public class SignIn extends AppCompatActivity {
 //                                database.getReference("Address").child(Common.getUid()).child("abc").setValue(123);
                                 Toast.makeText(SignIn.this, "Signed in successfully!", Toast.LENGTH_SHORT).show();
                                 Intent home = new Intent(SignIn.this, Home.class);
-                                startActivity(home);
-                                finish();
+                                FirebaseInstanceId.getInstance()
+                                        .getInstanceId()
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(SignIn.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            startActivity(home);
+                                            finish();
+                                        }).addOnCompleteListener(task -> {
+                                    Common.updateToken(SignIn.this, task.getResult().getToken());
+                                    startActivity(home);
+                                    finish();
+                                });
+
                             } else {
                                 Toast.makeText(SignIn.this, "Incorrect Password!", Toast.LENGTH_SHORT).show();
                             }
