@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
-        Dexter.withActivity(this)
+        Dexter.withContext(this)
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(new PermissionListener() {
                     @Override
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-
+                        token.continuePermissionRequest();
                     }
                 }).check();
     }
