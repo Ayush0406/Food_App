@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">AndroidEatIt</string>
+    <string name="app_name">FasterChef</string>
     <string name="Logo_name">FasterChef</string>
-    <string name="s_logan">Be Foody</string>
+    <string name="s_logan">Something Home-Made</string>
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
     <string name="title_activity_home">Home</string>
