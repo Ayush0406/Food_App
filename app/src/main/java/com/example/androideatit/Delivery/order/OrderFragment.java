@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -54,6 +55,7 @@ import Model.OrderModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.internal.operators.flowable.FlowableCache;
 
 public class OrderFragment extends Fragment {
 
@@ -115,6 +117,18 @@ public class OrderFragment extends Fragment {
                             else {
                                 Map<String, Object> updateData = new HashMap<>();
                                 updateData.put("orderStatus", 1);
+
+                                //to calculate extra charge of delivery (based on distance)
+                                Location locationA = new Location("");
+                                Location locationB = new Location("");
+                                locationB.setLatitude(Double.parseDouble(Common.currentDelivery.getLat()));
+                                locationB.setLongitude(Double.parseDouble(Common.currentDelivery.getLng()));
+                                locationA.setLatitude(orderModel.getLat());
+                                locationA.setLongitude(orderModel.getLng());
+
+                                double newPrice = orderModel.getTotalPayment() + locationA.distanceTo(locationB)*2e-3;
+                                updateData.put("finalPayment", newPrice);
+
                                 FirebaseDatabase.getInstance().getReference("Orders").child(orderModel.getKey())
                                         .updateChildren(updateData)
                                         .addOnFailureListener(new OnFailureListener() {
@@ -125,10 +139,13 @@ public class OrderFragment extends Fragment {
                                         }).addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
+                                        //update price locally
+                                        orderModel.setFinalPayment(newPrice);
+
                                         adapter.updateItemStatusAtPosition(pos, 1);
                                         adapter.notifyItemChanged(pos);
                                         String phoneNumber = orderModel.getUserPhone();
-                                        String message = new String("Dear " + orderModel.getUserName() + ",\nYour order has been accepted for delivery");
+                                        String message = new String("Dear " + orderModel.getUserName() + ",\nYour order has been accepted for delivery.\nTotal amount payable is:" + String.valueOf(newPrice));
                                         SmsManager smsManager = SmsManager.getDefault();
                                         smsManager.sendTextMessage(phoneNumber, null, message, null, null);
                                         Toast.makeText(getContext(), "Order Update Successful.", Toast.LENGTH_SHORT).show();
@@ -183,7 +200,7 @@ public class OrderFragment extends Fragment {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             OrderModel orderModel = adapter.getItemAtPosition(pos);
-                                            FirebaseDatabase.getInstance().getReference("Orders").child(orderModel.getKey()).removeValue()
+                                            FirebaseDatabase.getInstance().getReference("Orders").child(orderModel.getKey()).child("orderStatus").setValue(-1)
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
@@ -195,7 +212,7 @@ public class OrderFragment extends Fragment {
                                                     adapter.removeItem(pos);
                                                     adapter.notifyItemRemoved(pos);
                                                     String phoneNumber = orderModel.getUserPhone();
-                                                    String message = new String("Dear " + orderModel.getUserName() + ",\nSorry, Your order has been cancelled.");
+                                                    String message = new String("Dear " + orderModel.getUserName() + ",\nSorry, We are unable to process your order right now.");
                                                     SmsManager smsManager = SmsManager.getDefault();
                                                     smsManager.sendTextMessage(phoneNumber, null, message, null, null);
                                                     Toast.makeText(getContext(), "Order has been successfully cancelled!", Toast.LENGTH_SHORT).show();
@@ -239,7 +256,7 @@ public class OrderFragment extends Fragment {
                             else
                             {
                                 FirebaseDatabase.getInstance().getReference("Orders").child(orderModel.getKey())
-                                        .removeValue()
+                                        .child("orderStatus").setValue(2)
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
@@ -252,7 +269,7 @@ public class OrderFragment extends Fragment {
                                         adapter.notifyItemRemoved(pos);
 
                                         String phoneNumber = orderModel.getUserPhone();
-                                        String message = new String("Dear " + orderModel.getUserName() + ",\nYour order has been fulfilled.");
+                                        String message = new String("Dear " + orderModel.getUserName() + ",\nYour order has been fulfilled.\nStay Foody!!");
                                         SmsManager smsManager = SmsManager.getDefault();
                                         smsManager.sendTextMessage(phoneNumber, null, message, null, null);
 

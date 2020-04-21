@@ -132,13 +132,13 @@ public class Common {
         switch (orderStatus)
         {
             case 0:
-                return "Placed";
+                return "Placed, Approval Pending";
             case 1:
-                return "Shipping";
+                return "Out for Delivery";
             case 2:
-                return "Shipped";
-            case 3:
-                return "Cancelled";
+                return "Order Completed";
+            case -1:
+                return "Order Cancelled";
             default:
                 return "unknown";
         }
