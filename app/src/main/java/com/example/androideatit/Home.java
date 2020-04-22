@@ -125,6 +125,20 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 || super.onSupportNavigateUp();
     }
 
+//    @Override
+//    public void onBackPressed() {
+//
+//        if(Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.nav_menu)
+//        {
+//
+//        }
+//        else if(Navigation.findNavController(this, R.id.nav_host_fragment).getCurrentDestination().getId() == R.id.nav_food_detail)
+//        {
+//
+//        }
+//        super.onBackPressed();
+//    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         menuItem.setChecked(true);
