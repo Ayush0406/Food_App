@@ -112,14 +112,15 @@
 
                         <ImageView
                             android:layout_width="0dp"
-                            android:layout_height="20sp"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:layout_margin="5dp"
                             app:srcCompat="@drawable/ic_rupee_indian" />
 
                         <TextView
                             android:id="@+id/food_price_up"
                             android:layout_width="0dp"
-                            android:layout_height="18sp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="9"
                             android:fontFamily="@font/cooperhewitt_bold"
                             android:text="1,000"
@@ -179,8 +180,9 @@
 
                     <ImageView
                         android:layout_width="0dp"
-                        android:layout_height="20sp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
+                        android:layout_margin="4dp"
                         app:srcCompat="@drawable/ic_rupee_indian" />
 
                     <TextView
