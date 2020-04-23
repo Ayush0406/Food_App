@@ -384,7 +384,7 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
         EditText edt_comment = view.findViewById(R.id.edt_comment);
         TextView txt_address = view.findViewById(R.id.txt_address_detail);
         RadioButton rdi_home = (RadioButton)view.findViewById(R.id.rdi_home_address);
-        RadioButton rdi_other_address = (RadioButton)view.findViewById(R.id.rdi_other_address);
+//        RadioButton rdi_other_address = (RadioButton)view.findViewById(R.id.rdi_other_address);
         RadioButton rdi_ship_here = (RadioButton)view.findViewById(R.id.rdi_ship_this_address);
         RadioButton rdi_cod = (RadioButton)view.findViewById(R.id.rdi_cod);
 
@@ -395,27 +395,18 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
         rdi_home.setOnCheckedChangeListener((compoundButton, b) -> {
             if(b)
             {
-                if(Common.currentUser.getAddress().equals(" "))
-                {
-                    edt_address.setText("");
-                    edt_address.setHint("Enter your address");
-                    txt_address.setVisibility(View.GONE);
-                }
-                else
-                {
                     edt_address.setText(Common.currentUser.getAddress());
                     txt_address.setVisibility(View.GONE);
-                }
             }
         });
-        rdi_other_address.setOnCheckedChangeListener((compoundButton, b) -> {
-            if(b)
-            {
-                edt_address.setText("");
-                edt_address.setHint("Enter your address");
-                txt_address.setVisibility(View.GONE);
-            }
-        });
+//        rdi_other_address.setOnCheckedChangeListener((compoundButton, b) -> {
+//            if(b)
+//            {
+//                edt_address.setText("");
+//                //edt_address.setHint("Enter your address");
+//                txt_address.setVisibility(View.GONE);
+//            }
+//        });
         rdi_ship_here.setOnCheckedChangeListener((compoundButton, b) -> {
             if(b)
             {
@@ -518,7 +509,7 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
 
                                     @Override
                                     public void onError(Throwable e) {
-                                        Toast.makeText(getContext(),"1" + e.getMessage(), Toast.LENGTH_SHORT).show();;
+                                        //Toast.makeText(getContext(),"1" + e.getMessage(), Toast.LENGTH_SHORT).show();;
                                     }
                                 });
 
@@ -596,6 +587,14 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
             {
                 Address address = addressList.get(0);
                 StringBuilder sb = new StringBuilder(address.getAddressLine(0));
+//                StringBuilder f = new StringBuilder(addressList.get(2).getAddressLine((0))).append(addressList.get(2).getAddressLine(1));
+//                StringBuilder sb1 = new StringBuilder(address.getAddressLine(1));
+//                StringBuilder sb2 = new StringBuilder(address.getAddressLine(2));
+//                StringBuilder sb3 = new StringBuilder(address.getAddressLine(3));
+//                String[] suggestions = {sb.toString(), sb1.toString(),sb2.toString(), sb3.toString()};
+//                float[] resu = new float[4];
+//                Location.distanceBetween(latitude,longitude,19.09,73.01,resu);
+//                Log.d("Address2",""+String.valueOf(resu[0]));
                 result = sb.toString();
             }
             else

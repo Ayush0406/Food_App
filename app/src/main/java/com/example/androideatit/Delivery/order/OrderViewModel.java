@@ -1,5 +1,10 @@
 package com.example.androideatit.Delivery.order;
 
+import android.content.Intent;
+import android.location.Geocoder;
+import android.location.Location;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -57,6 +62,11 @@ public class OrderViewModel extends ViewModel implements IOrderCallbackListener 
 //                listener.orOrderLoadFailed(databaseError.getMessage());
 //            }
 //        });
+        Location locationA = new Location("");
+        Location locationB = new Location("");
+        locationB.setLatitude(Double.parseDouble(Common.currentDelivery.getLat()));
+        locationB.setLongitude(Double.parseDouble(Common.currentDelivery.getLng()));
+        int radius = Integer.parseInt(Common.currentDelivery.getRadius());
 
         DatabaseReference orderRef = FirebaseDatabase.getInstance().getReference("Orders");
         orderRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -66,7 +76,11 @@ public class OrderViewModel extends ViewModel implements IOrderCallbackListener 
                 {
                     OrderModel orderModel = itemSnapShot.getValue(OrderModel.class);
                     orderModel.setKey(itemSnapShot.getKey());
-                    tempList.add(orderModel);
+                    locationA.setLatitude(orderModel.getLat());
+                    locationA.setLongitude(orderModel.getLng());
+                    if(locationA.distanceTo(locationB) <= radius*1000) {
+                        tempList.add(orderModel);
+                    }
                 }
                 listener.onOrderLoadSuccess(tempList);
             }
