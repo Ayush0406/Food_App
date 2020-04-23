@@ -384,7 +384,7 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
         EditText edt_comment = view.findViewById(R.id.edt_comment);
         TextView txt_address = view.findViewById(R.id.txt_address_detail);
         RadioButton rdi_home = (RadioButton)view.findViewById(R.id.rdi_home_address);
-//        RadioButton rdi_other_address = (RadioButton)view.findViewById(R.id.rdi_other_address);
+        RadioButton rdi_other_address = (RadioButton)view.findViewById(R.id.rdi_other_address);
         RadioButton rdi_ship_here = (RadioButton)view.findViewById(R.id.rdi_ship_this_address);
         RadioButton rdi_cod = (RadioButton)view.findViewById(R.id.rdi_cod);
 
@@ -399,14 +399,14 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
                     txt_address.setVisibility(View.GONE);
             }
         });
-//        rdi_other_address.setOnCheckedChangeListener((compoundButton, b) -> {
-//            if(b)
-//            {
-//                edt_address.setText("");
-//                //edt_address.setHint("Enter your address");
-//                txt_address.setVisibility(View.GONE);
-//            }
-//        });
+        rdi_other_address.setOnCheckedChangeListener((compoundButton, b) -> {
+            if(b)
+            {
+                edt_address.setText("");
+                //edt_address.setHint("Enter your address");
+                txt_address.setVisibility(View.GONE);
+            }
+        });
         rdi_ship_here.setOnCheckedChangeListener((compoundButton, b) -> {
             if(b)
             {
