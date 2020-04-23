@@ -103,6 +103,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 
+import static java.lang.Math.round;
+
 
 public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListener {
 
@@ -499,7 +501,7 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
                                         order.setCartItemList(cartItems);
                                         order.setTotalPayment(totalPrice);
                                         order.setDiscount(0); //to be modified later
-                                        order.setFinalPayment(finalPrice);
+                                        order.setFinalPayment(round(finalPrice));
                                         order.setCod(true);
                                         order.setTransactionID("Cash On Delivery");
 
