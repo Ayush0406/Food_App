@@ -235,7 +235,7 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
 
                     @Override
                     public void onSuccess(Double aDouble) {
-                        txt_total_price.setText(new StringBuilder("Total: ").append(Common.formatPrice(aDouble*discount)));
+                        txt_total_price.setText(new StringBuilder("Total: \u20B9").append(Common.formatPrice(aDouble*discount)));
                     }
 
                     @Override
@@ -320,7 +320,7 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
 
                     @Override
                     public void onSuccess(Double price) {
-                        txt_total_price.setText(new StringBuilder("Total: ")
+                        txt_total_price.setText(new StringBuilder("Total: \u20B9")
                                 .append(Common.formatPrice(price*discount)));
                     }
 

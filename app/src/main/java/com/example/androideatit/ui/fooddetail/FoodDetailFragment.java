@@ -226,7 +226,7 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
             for(AddonModel addonModel: Common.selectedFood.getAddon()){
 
                     Chip chip = (Chip)getLayoutInflater().inflate(R.layout.layout_addon_item, null);
-                    chip.setText(new StringBuilder(addonModel.getName()).append("(+$")
+                    chip.setText(new StringBuilder(addonModel.getName()).append("(+\u20B9")
                             .append(addonModel.getPrice()).append(")"));
                     chip.setOnCheckedChangeListener(((compoundButton, b) -> {
                         if(b){
@@ -287,7 +287,7 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
             for (AddonModel addonModel : Common.selectedFood.getUserSelectedAddon()) // add all avail addons to list
             {
                 Chip chip = (Chip) getLayoutInflater().inflate(R.layout.layout_chip_with_delete_icon, null);
-                chip.setText(new StringBuilder(addonModel.getName()).append("(+$")
+                chip.setText(new StringBuilder(addonModel.getName()).append("(+\u20B9")
                         .append(addonModel.getPrice()).append(")"));
 
                 chip.setClickable(false);
@@ -413,7 +413,7 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
             if(addonModel.getName().toLowerCase().contains(charSequence.toString().toLowerCase()))
             {
                 Chip chip = (Chip)getLayoutInflater().inflate(R.layout.layout_addon_item, null);
-                chip.setText(new StringBuilder(addonModel.getName()).append("(+$")
+                chip.setText(new StringBuilder(addonModel.getName()).append("(+\u20B9")
                 .append(addonModel.getPrice()).append(")"));
                 chip.setOnCheckedChangeListener(((compoundButton, b) -> {
                     if(b){
