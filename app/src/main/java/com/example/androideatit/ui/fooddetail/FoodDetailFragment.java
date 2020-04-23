@@ -395,6 +395,8 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
                 food_price.setText(new StringBuilder("").append(Common.formatPrice(displayPrice)).toString());
             }
 
+            food_price.setText(new StringBuilder("").append(Common.formatPrice(displayPrice)).toString());
+
     }
 
     @Override
