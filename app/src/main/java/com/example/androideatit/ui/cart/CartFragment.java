@@ -453,15 +453,17 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
         builder.setNegativeButton("Cancel", (dialogInterface, i) -> {
             dialogInterface.dismiss();
         }).setPositiveButton("Proceed", (dialogInterface, i) -> {
-            if(rdi_cod.isChecked())
-                paymentCOD(edt_address.getText().toString(), edt_comment.getText().toString());
+            boolean ship_here = false;
+            if(rdi_ship_here.isChecked())
+                ship_here = true;
+                paymentCOD(edt_address.getText().toString(), edt_comment.getText().toString(), ship_here);
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
-    private void paymentCOD(String address, String comment) {
+    private void paymentCOD(String address, String comment, boolean ship_here) {
         compositeDisposable.add(cartDataSource.getAllCart(Common.getUid())
             .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -488,15 +490,21 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
                                         order.setShippingAddress(address);
                                         order.setComment(comment);
 
-                                        if(currentLocation != null)
+//                                        if(currentLocation != null)
+                                        if(ship_here)
                                         {
-                                            order.setLat(currentLocation.getLatitude());
-                                            order.setLng(currentLocation.getLongitude());
+                                            if(currentLocation != null) {
+                                                order.setLat(currentLocation.getLatitude());
+                                                order.setLng(currentLocation.getLongitude());
+                                            }
+                                            else
+                                            {
+                                                getLatLngFromAddress(address, order);
+                                            }
                                         }
                                         else
                                         {
-                                            order.setLat(-0.1f);
-                                            order.setLng(-0.1f);
+                                            getLatLngFromAddress(address, order);
                                         }
                                         order.setCartItemList(cartItems);
                                         order.setTotalPayment(totalPrice);
@@ -544,7 +552,7 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
         });
     }
 
-    String getLatLngFromAddress(String address)
+    String getLatLngFromAddress(String address, Order order)
     {
         Geocoder geocoder = new Geocoder(getContext());
         String result="";
@@ -554,7 +562,9 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
             if(addressList != null && addressList.size() > 0) {
                 double lat = addressList.get(0).getLatitude();
                 double lng = addressList.get(0).getLongitude();
-                result = String.valueOf(lat) + " " + String.valueOf(lng);
+                //result = String.valueOf(lat) + " " + String.valueOf(lng);
+                order.setLat(lat);
+                order.setLng(lng);
             }
         }
         catch (IOException e) {
