@@ -430,8 +430,8 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
 
                                 @Override
                                 public void onSuccess(String s) {
-                                    edt_address.setText(coordinates);
-                                    txt_address.setText(s);
+                                    edt_address.setText(s);
+                                    txt_address.setText(coordinates);
                                     txt_address.setVisibility(View.VISIBLE);
                                 }
 
@@ -542,6 +542,27 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
                 listener.onLoadTimeFailed(databaseError.getMessage());
             }
         });
+    }
+
+    String getLatLngFromAddress(String address)
+    {
+        Geocoder geocoder = new Geocoder(getContext());
+        String result="";
+        try
+        {
+            List<Address> addressList = geocoder.getFromLocationName(address, 1);
+            if(addressList != null && addressList.size() > 0) {
+                double lat = addressList.get(0).getLatitude();
+                double lng = addressList.get(0).getLongitude();
+                result = String.valueOf(lat) + " " + String.valueOf(lng);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            result = e.getMessage();
+        }
+        Log.d("test address", result);
+        return result;
     }
 
     private void writeOrderToFirebase(Order order) {

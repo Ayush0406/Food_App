@@ -14,6 +14,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -45,7 +48,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import Model.User;
@@ -126,6 +132,8 @@ public class SignIn extends AppCompatActivity {
 //                                database.getReference("Address").child(Common.getUid()).setValue("udaipur akashvani colony");
 //                                database.getReference("Address").child(Common.getUid()).child("abc").setValue(123);
                                 Toast.makeText(SignIn.this, "Signed in successfully!", Toast.LENGTH_SHORT).show();
+//                                getLatLngFromAddress(user.getAddress());
+//                                Log.d("address", lat+" "+lng);
                                 Intent home = new Intent(SignIn.this, Home.class);
                                 FirebaseInstanceId.getInstance()
                                         .getInstanceId()
@@ -178,10 +186,28 @@ public class SignIn extends AppCompatActivity {
                 startActivity(signInDelivery);
             }
         });
-
-
-
     }
+
+//    String getLatLngFromAddress(String address)
+//    {
+//        Geocoder geocoder = new Geocoder(this);
+//        String result="";
+//        try
+//        {
+//            List<Address> addressList = geocoder.getFromLocationName(address, 1);
+//            if(addressList != null && addressList.size() > 0) {
+//                double lat = addressList.get(0).getLatitude();
+//                double lng = addressList.get(0).getLongitude();
+//                result = String.valueOf(lat) + " " + String.valueOf(lng);
+//            }
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//            result = e.getMessage();
+//        }
+//        Log.d("test address", result);
+//        return result;
+//    }
 
     boolean checkPermission(String permission)
     {
