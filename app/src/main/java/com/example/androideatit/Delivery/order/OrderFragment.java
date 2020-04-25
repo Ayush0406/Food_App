@@ -57,6 +57,8 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.internal.operators.flowable.FlowableCache;
 
+import static java.lang.Math.round;
+
 public class OrderFragment extends Fragment {
 
     @BindView(R.id.recycler_order)
@@ -145,7 +147,7 @@ public class OrderFragment extends Fragment {
                                         adapter.updateItemStatusAtPosition(pos, 1);
                                         adapter.notifyItemChanged(pos);
                                         String phoneNumber = orderModel.getUserPhone();
-                                        String message = new String("Dear " + orderModel.getUserName() + ",\nYour order has been accepted for delivery.\nTotal amount payable is:" + String.valueOf(newPrice));
+                                        String message = new String("Dear " + orderModel.getUserName() + ",\nYour order has been accepted for delivery.\nTotal amount payable is:" + String.valueOf(round(newPrice)));
                                         SmsManager smsManager = SmsManager.getDefault();
                                         smsManager.sendTextMessage(phoneNumber, null, message, null, null);
                                         Toast.makeText(getContext(), "Order Update Successful.", Toast.LENGTH_SHORT).show();

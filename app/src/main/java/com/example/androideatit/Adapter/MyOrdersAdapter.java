@@ -26,6 +26,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static java.lang.Math.round;
+
 public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyViewHolder> {
 
     private Context context;
@@ -58,7 +60,7 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
         .append(simpleDateFormat.format(date)));
         holder.txt_order_number.setText(new StringBuilder("Order Number: ")
         .append(orderList.get(position).getOrderNumber()));
-        holder.txt_order_price.setText(new StringBuilder("Price (excluding delivery): Rs. ").append(orderList.get(position).getFinalPayment()));
+        holder.txt_order_price.setText(new StringBuilder("Price (excluding delivery): Rs. ").append(round(orderList.get(position).getFinalPayment())));
         holder.txt_order_status.setText(new StringBuilder("Status: ").append(Common.convertStatusToText(orderList.get(position).getOrderStatus())));
         List<CartItem> cartItemList = orderList.get(position).getCartItemList();
         StringBuilder orderItems = new StringBuilder("Order Items: ");
