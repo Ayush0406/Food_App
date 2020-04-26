@@ -149,7 +149,7 @@ public class Common {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         builder.append(welcome);
         SpannableString spannableString = new SpannableString(name);
-        StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
+        StyleSpan boldSpan = new StyleSpan(Typeface.NORMAL);
         spannableString.setSpan(boldSpan, 0, name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ForegroundColorSpan(color), 0, name.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.append(spannableString);

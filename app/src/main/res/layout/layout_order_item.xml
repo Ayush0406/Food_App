@@ -26,6 +26,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:textColor="#002b64"
                 android:id="@+id/txt_order_date"
                 android:text="Today at 13:05 pm"
                 android:fontFamily="@font/cooperhewitt_bold"
@@ -40,13 +41,13 @@
             <TextView
                 android:id="@+id/txt_order_number"
                 android:text="Order number:"
-                android:fontFamily="@font/cooperhewitt_bold"
+                android:fontFamily="@font/cooperhewitt_medium"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:textSize="12sp"
-                android:textColor="@android:color/holo_green_dark"
-                android:textStyle="italic"
+                android:textSize="13sp"
+                android:textColor="#000000"
+                android:textStyle="normal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
@@ -54,13 +55,13 @@
             <TextView
                 android:id="@+id/txt_order_price"
                 android:text="Price: "
-                android:fontFamily="@font/cooperhewitt_bold"
+                android:fontFamily="@font/cooperhewitt_medium"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginEnd="8dp"
-                android:textSize="12sp"
-                android:textColor="@android:color/holo_green_dark"
-                android:textStyle="italic"
+                android:textSize="13sp"
+                android:textColor="#000000"
+                android:textStyle="normal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
@@ -68,13 +69,13 @@
             <TextView
                 android:id="@+id/txt_order_status"
                 android:text="Status: Placed"
-                android:fontFamily="@font/cooperhewitt_bold"
+                android:fontFamily="@font/cooperhewitt_medium"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginEnd="8dp"
-                android:textSize="12sp"
-                android:textColor="@android:color/holo_green_dark"
-                android:textStyle="italic"
+                android:textSize="13sp"
+                android:textColor="#000000"
+                android:textStyle="normal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
@@ -82,16 +83,35 @@
             <TextView
                 android:id="@+id/txt_order_items"
                 android:text="Order Items: "
-                android:fontFamily="@font/cooperhewitt_bold"
+                android:fontFamily="@font/cooperhewitt_medium"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="3dp"
                 android:layout_marginEnd="8dp"
-                android:textSize="12sp"
-                android:textColor="@android:color/holo_green_dark"
-                android:textStyle="italic"
+                android:textSize="13sp"
+                android:textColor="#000000"
+                android:textStyle="normal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 />
+
+            <android.widget.Button
+                android:id="@+id/btnCallDelivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="#c75c41"
+                android:fontFamily="@font/cooperhewitt_medium"
+                android:text="Call Delivery"
+                android:textColor="@android:color/white"
+                android:textSize="13sp"
+                android:textAlignment="center"
+                android:gravity="center_vertical">
+
+            </android.widget.Button>
 
         </LinearLayout>
 
