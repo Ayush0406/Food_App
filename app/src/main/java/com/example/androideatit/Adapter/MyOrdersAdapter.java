@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -86,6 +87,7 @@ public class MyOrdersAdapter extends RecyclerView.Adapter<MyOrdersAdapter.MyView
             orderItems.append(item.getFoodName()).append(", ");
         }
         orderItems.delete(orderItems.length()-2, orderItems.length());
+//        Common.setSpanStringColor("Name: ", new String(orderItems), holder.txt_order_items, Color.parseColor("#02330c"));
         holder.txt_order_items.setText(orderItems);
         if(!orderList.get(position).getDeliveryNumber().equals(""))
         {

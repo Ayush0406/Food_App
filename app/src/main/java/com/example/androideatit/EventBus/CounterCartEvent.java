@@ -4,7 +4,7 @@ public class CounterCartEvent {
     private boolean success;
 
     public CounterCartEvent(boolean sources){
-        this.success = success;
+        this.success = sources;
     }
 
     public boolean isSuccess() {

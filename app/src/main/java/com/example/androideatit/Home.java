@@ -1,5 +1,7 @@
 package com.example.androideatit;
 
+import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.renderscript.Sampler;
 import android.view.MenuItem;
@@ -29,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -86,6 +89,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                countCartItem();
                 navController.navigate(R.id.nav_cart);
             }
         });
@@ -106,7 +110,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         View headerView = navigationView.getHeaderView(0);
         TextView txt_user = (TextView) headerView.findViewById(R.id.txt_user);
         Common.setSpanString("Hey, ",  Common.currentUser.getName(), txt_user);
-
 
         countCartItem();
     }
@@ -136,7 +139,24 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 //        {
 //
 //        }
-//        super.onBackPressed();
+//        FragmentManager manager = getFragmentManager();
+//        if(manager.getBackStackEntryCount() == 0) {
+//            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+//            dialog.setTitle("Sign Out?")
+//                    .setMessage("Do you really want to Sign Out?")
+//                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            finish();
+//                        }
+//                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    dialog.dismiss();
+//                }
+//            });
+//            dialog.show();
+//        }
 //    }
 
     @Override
@@ -146,21 +166,28 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         switch (menuItem.getItemId())
         {
             case R.id.nav_home:
-                if(menuItem.getItemId() != menuClickId)
+                if(menuItem.getItemId() != menuClickId) {
                     navController.navigate(R.id.nav_home);
-                break;
+                    countCartItem();
+                }
+                    break;
             case R.id.nav_menu:
-                if(menuItem.getItemId() != menuClickId)
+                if(menuItem.getItemId() != menuClickId) {
                     navController.navigate(R.id.nav_menu);
-                break;
+                    countCartItem();
+                }
+                    break;
             case R.id.nav_cart:
-                if(menuItem.getItemId() != menuClickId)
+                if(menuItem.getItemId() != menuClickId) {
                     navController.navigate(R.id.nav_cart);
-                break;
+                    countCartItem();
+                }break;
             case R.id.nav_view_orders:
-                if(menuItem.getItemId() != menuClickId)
+                if(menuItem.getItemId() != menuClickId) {
                     navController.navigate(R.id.nav_view_orders);
-                break;
+                    countCartItem();
+                }
+                    break;
         }
         menuClickId = menuItem.getItemId();
         //WAS FALSE CHANGED TO TRUE POSSIBLE ERROR
@@ -208,7 +235,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     {
         if(event.isSuccess())
         {
-
             countCartItem();
         }
     }

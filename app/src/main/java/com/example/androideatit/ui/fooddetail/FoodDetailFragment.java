@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.drawable.IconCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -115,7 +117,6 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
 //            Common.selectedFood.setAddon(List<AddonModel> addon);
 //        }
     }
-
 
     @OnClick(R.id.btnCart)
     void onCartItemAdd(){
@@ -242,6 +243,7 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
 
         }
     }
+
 
     @Nullable
     @Override
@@ -441,6 +443,13 @@ public class FoodDetailFragment extends Fragment implements TextWatcher {
 
     @Override
     public void onDestroy() {
+//        FragmentManager manager = getFragmentManager();
+//        Log.d("back stack", String.valueOf(manager.getBackStackEntryCount()));
+//        if(manager.getBackStackEntryCount() > 0)
+//        {
+//            manager.popBackStack();
+//        }
+//        manager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         EventBus.getDefault().postSticky(new MenuItemBack());
         super.onDestroy();
     }

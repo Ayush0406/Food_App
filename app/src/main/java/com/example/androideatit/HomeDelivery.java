@@ -32,8 +32,5 @@ public class HomeDelivery extends AppCompatActivity {
             }
         });
         dialog.show();
-
-
-
     }
 }
