@@ -128,9 +128,9 @@ public class OrderFragment extends Fragment {
                                 locationA.setLatitude(orderModel.getLat());
                                 locationA.setLongitude(orderModel.getLng());
 
-                                double newPrice = orderModel.getTotalPayment() + locationA.distanceTo(locationB)*2e-3;
+                                double newPrice = orderModel.getTotalPayment() + locationA.distanceTo(locationB)*5e-3;
                                 updateData.put("finalPayment", newPrice);
-
+                                updateData.put("deliveryNumber", Common.currentDelivery.getPhone());
                                 FirebaseDatabase.getInstance().getReference("Orders").child(orderModel.getKey())
                                         .updateChildren(updateData)
                                         .addOnFailureListener(new OnFailureListener() {
@@ -147,7 +147,7 @@ public class OrderFragment extends Fragment {
                                         adapter.updateItemStatusAtPosition(pos, 1);
                                         adapter.notifyItemChanged(pos);
                                         String phoneNumber = orderModel.getUserPhone();
-                                        String message = new String("Dear " + orderModel.getUserName() + ",\nYour order has been accepted for delivery.\nTotal amount payable is:" + String.valueOf(round(newPrice)));
+                                        String message = new String("Dear " + orderModel.getUserName() + ",\nYour order has been accepted for delivery.\nTotal amount payable is: " + String.valueOf(round(newPrice)));
                                         SmsManager smsManager = SmsManager.getDefault();
                                         smsManager.sendTextMessage(phoneNumber, null, message, null, null);
                                         Toast.makeText(getContext(), "Order Update Successful.", Toast.LENGTH_SHORT).show();
@@ -271,7 +271,7 @@ public class OrderFragment extends Fragment {
                                         adapter.notifyItemRemoved(pos);
 
                                         String phoneNumber = orderModel.getUserPhone();
-                                        String message = new String("Dear " + orderModel.getUserName() + ",\nYour order has been fulfilled.\nStay Foody!!");
+                                        String message = new String("Dear " + orderModel.getUserName() + ",\nYour order has been fulfilled.\nEnjoy your food!");
                                         SmsManager smsManager = SmsManager.getDefault();
                                         smsManager.sendTextMessage(phoneNumber, null, message, null, null);
 
