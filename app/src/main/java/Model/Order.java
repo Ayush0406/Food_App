@@ -5,7 +5,7 @@ import com.example.androideatit.Database.CartItem;
 import java.util.List;
 
 public class Order {
-    private String userId, userName, userPhone, shippingAddress, comment, transactionID;
+    private String userId, userName, userPhone, shippingAddress, comment, transactionID, deliveryNumber;
     private double lat, lng, totalPayment, finalPayment;
     private boolean cod;
     private int discount;
@@ -16,7 +16,7 @@ public class Order {
     private int orderStatus;
 
     public Order() {
-
+        deliveryNumber="";
     }
 
     public String getUserId() {
@@ -145,5 +145,13 @@ public class Order {
 
     public void setOrderStatus(int orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public String getDeliveryNumber() {
+        return deliveryNumber;
+    }
+
+    public void setDeliveryNumber(String deliveryNumber) {
+        this.deliveryNumber = deliveryNumber;
     }
 }

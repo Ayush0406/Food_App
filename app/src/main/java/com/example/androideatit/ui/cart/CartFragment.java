@@ -398,6 +398,7 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
             if(b)
             {
                     edt_address.setText(Common.currentUser.getAddress());
+                    edt_address.setEnabled(false);
                     txt_address.setVisibility(View.GONE);
             }
         });
@@ -482,13 +483,15 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
 
                                     @Override
                                     public void onSuccess(Double totalPrice) {
-                                        double finalPrice = totalPrice * discount; //discount will be used later
+                                        double finalPrice = totalPrice * discount;
+                                        totalPrice = finalPrice;
                                         Order order = new Order();
                                         order.setUserId(Common.getUid());
                                         order.setUserName(Common.currentUser.getName());
                                         order.setUserPhone(Common.currentUser.getPhone());
                                         order.setShippingAddress(address);
                                         order.setComment(comment);
+                                        order.setDiscount((int)((1-discount)*100));
 
 //                                        if(currentLocation != null)
                                         if(ship_here)
@@ -507,8 +510,7 @@ public class CartFragment extends Fragment implements ILoadTimeFromFirebaseListe
                                             getLatLngFromAddress(address, order);
                                         }
                                         order.setCartItemList(cartItems);
-                                        order.setTotalPayment(totalPrice);
-                                        order.setDiscount(0); //to be modified later
+                                        order.setTotalPayment(round(totalPrice));
                                         order.setFinalPayment(round(finalPrice));
                                         order.setCod(true);
                                         order.setTransactionID("Cash On Delivery");
