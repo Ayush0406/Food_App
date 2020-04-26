@@ -25,6 +25,9 @@ import com.example.androideatit.R;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
+import Model.CategoryModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -54,6 +57,7 @@ public class MenuFragment extends Fragment {
             Toast.makeText(getContext(), ""+s, Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         });
+
         menuViewModel.getCategoryListMutable().observe(this, CategoryModels->{
             dialog.dismiss();
             adapter = new MyCategoriesAdapter(getContext(), CategoryModels);

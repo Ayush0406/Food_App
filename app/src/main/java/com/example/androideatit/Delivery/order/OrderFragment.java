@@ -128,7 +128,7 @@ public class OrderFragment extends Fragment {
                                 locationA.setLatitude(orderModel.getLat());
                                 locationA.setLongitude(orderModel.getLng());
 
-                                double newPrice = orderModel.getTotalPayment() + locationA.distanceTo(locationB)*2e-3;
+                                double newPrice = orderModel.getTotalPayment() + locationA.distanceTo(locationB)*5e-3;
                                 updateData.put("finalPayment", newPrice);
 
                                 FirebaseDatabase.getInstance().getReference("Orders").child(orderModel.getKey())
@@ -198,7 +198,8 @@ public class OrderFragment extends Fragment {
                         public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext()).setTitle("Delete Order")
                                     .setMessage("Do you really want to reject this order?")
-                                    .setNegativeButton("CANCEL", (dialog, which) -> dialog.dismiss()).setPositiveButton("REJECT", new DialogInterface.OnClickListener() {
+                                    .setNegativeButton("CANCEL", (dialog, which) -> dialog.dismiss())
+                                    .setPositiveButton("REJECT", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             OrderModel orderModel = adapter.getItemAtPosition(pos);
