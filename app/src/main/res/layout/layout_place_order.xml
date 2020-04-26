@@ -8,14 +8,14 @@
     >
 
     <com.google.android.material.textfield.TextInputLayout
-        android:fontFamily="@font/cooperhewitt_bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/edt_address"
+            android:textColor="#000000"
             android:hint="Enter your address"
-            android:fontFamily="@font/cooperhewitt_bold"
+            android:fontFamily="@font/cooperhewitt_medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -25,35 +25,40 @@
         android:id="@+id/txt_address_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/cooperhewitt_bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:text="Your Address"
+        android:fontFamily="@font/cooperhewitt_medium"
         android:visibility="gone"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"/>
+        android:textStyle="normal"
+        android:textColor="@android:color/black"
+        />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:fontFamily="@font/cooperhewitt_bold"
+        android:fontFamily="@font/cooperhewitt_medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/edt_comment"
-            android:hint="Enter your comment"
-            android:fontFamily="@font/cooperhewitt_bold"
+            android:fontFamily="@font/cooperhewitt_medium"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:hint="Enter your comment"
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cooperhewitt_bold"
         android:text="Delivery Method"
+        android:textColor="#002b64"
         android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/dialog_header_color"/>
+        android:textStyle="normal" />
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -64,10 +69,10 @@
             android:id="@+id/rdi_home_address"
             android:checked="true"
             android:text="Home Address"
-            android:fontFamily="@font/cooperhewitt_bold"
+            android:fontFamily="@font/cooperhewitt_medium"
             android:textSize="18sp"
-            android:textStyle="italic"
-            android:textColor="@color/dialog_text_color"
+            android:textStyle="normal"
+            android:textColor="#000000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -75,10 +80,10 @@
             android:id="@+id/rdi_other_address"
             android:checked="false"
             android:text="Other Address"
-            android:fontFamily="@font/cooperhewitt_bold"
             android:textSize="18sp"
-            android:textStyle="italic"
-            android:textColor="@color/dialog_text_color"
+            android:fontFamily="@font/cooperhewitt_medium"
+            android:textStyle="normal"
+            android:textColor="#000000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -86,23 +91,24 @@
             android:id="@+id/rdi_ship_this_address"
             android:checked="false"
             android:text="Ship to current address"
-            android:fontFamily="@font/cooperhewitt_bold"
+            android:fontFamily="@font/cooperhewitt_medium"
             android:textSize="18sp"
-            android:textStyle="italic"
-            android:textColor="@color/dialog_text_color"
+            android:textStyle="normal"
+            android:textColor="#000000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
     </RadioGroup>
 
     <TextView
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/cooperhewitt_bold"
         android:text="Payment Method"
+        android:textColor="#002b64"
         android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/dialog_header_color"/>
+        android:textStyle="bold" />
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -113,10 +119,10 @@
             android:id="@+id/rdi_cod"
             android:checked="true"
             android:text="Cash On Delivery"
-            android:fontFamily="@font/cooperhewitt_bold"
             android:textSize="18sp"
-            android:textStyle="italic"
-            android:textColor="@color/dialog_text_color"
+            android:fontFamily="@font/cooperhewitt_medium"
+            android:textStyle="normal"
+            android:textColor="#000000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
