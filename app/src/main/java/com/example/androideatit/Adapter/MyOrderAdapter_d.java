@@ -46,9 +46,9 @@ public class MyOrderAdapter_d extends RecyclerView.Adapter<MyOrderAdapter_d.MyVi
         Glide.with(context).load(orderModelList.get(position).getCartItemList().get(0).getFoodImage()).into(holder.img_food_image);
         holder.txt_order_number.setText(orderModelList.get(position).getKey());
         Common.setSpanStringColor("Order Date: ", simpleDateFormat.format(orderModelList.get(position).getCreateDate()), holder.txt_time, Color.parseColor("#333639"));
-        Common.setSpanStringColor("Order status", Common.convertStatusToString_d(orderModelList.get(position).getOrderStatus()), holder.txt_order_status, Color.parseColor("#00579A"));
-        Common.setSpanStringColor("Name: ", orderModelList.get(position).getUserName(), holder.txt_name, Color.parseColor("#00574B"));
-        Common.setSpanStringColor("Number of Items: ", orderModelList.get(position).getCartItemList()==null?"0":String.valueOf(orderModelList.get(position).getCartItemList().size()), holder.txt_num_item, Color.parseColor("#4B647D"));
+        Common.setSpanStringColor("Order status: ", Common.convertStatusToString_d(orderModelList.get(position).getOrderStatus()), holder.txt_order_status, Color.parseColor("#c75c41"));
+        Common.setSpanStringColor("Name: ", orderModelList.get(position).getUserName(), holder.txt_name, Color.parseColor("#02330c"));
+        Common.setSpanStringColor("Number of Items: ", orderModelList.get(position).getCartItemList()==null?"0":String.valueOf(orderModelList.get(position).getCartItemList().size()), holder.txt_num_item, Color.parseColor("#333639"));
 
     }
 
